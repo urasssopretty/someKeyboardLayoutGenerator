@@ -2,27 +2,34 @@ import string
 
 
 def language_selection():
+    languages = [
+        "english",
+        "ukrainian",
+        "russian",
+        "french",
+        "polish",
+        "german",
+        "danish",
+        "italian",
+        "icelandic",
+        "norwegian",
+        "slovenian"
+    ]
+
     print("type is the number of the language that used in this file?")
-    print("\t1. english")
-    print("\t2. ukrainian")
-    print("\t3. russian")
-    print("\t4. french")
-    print("\t5. polish")
-    print("\t6. german")
-    print("\t7. danish")
-    print("\t8. italian")
-    print("\t8. icelandic")
-    print("\t9. norwegian")
-    print("\t10. slovenian")
+
+    for i in range(2, int(len(languages)), 2):
+        print(str(i - 1) + ".\t" + languages[i - 1] + "\t", end='')
+        print(str(i) + ".\t" + languages[i])
 
     while True:
-        print("type number:\t", end='')
+        print("\n\ttype ur number:\t", end='')
         user_input = input()
 
         if user_input not in "12345678910":
-            print("INCORRECT INPUT")
-
-        break
+            print("INCORRECT INPUT\n\n just try again")
+        else:
+            break
 
     return user_input
 
@@ -51,10 +58,26 @@ def open_file(file_name):
     return open(file_name, "r").read().lower()
 
 
-def text_analysis(file_name, language):
+# def text_analysis(file_name, language):
+def text_analysis(file_name):
     file = open_file(file_name)
-    result = {}
     alphabet = list(string.ascii_lowercase)
+    result = []
+
+    for index in range(len(alphabet)):
+        result[index] = file.count(alphabet[index])
+
+    return result
+
+
+def changeZXCV():
+    print("do u wanna save ZXCV keys for shortcuts? Y/n")
+    user_input = input()
+
+    if user_input.lower() in "yes " or user_input == "":
+        return True
+    else:
+        return False
 
 
 def main():
@@ -62,7 +85,13 @@ def main():
     language_number = language_selection()
     file = file_selection()
 
-    text_analysis(file, language_number)
+    # text_analysis(file, language_number)
+    letterFrequency = text_analysis(file)
+    # print("what is way of setting: easy/pro?")
+
+    savePartOfQWERTY = changeZXCV()
+
+    # if savePartOfQWERTY:
 
 
 if __name__ == '__main__':
