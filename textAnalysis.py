@@ -9,7 +9,7 @@ import string
 #   -   keyboardType
 #   -   keys
 #           -   primary
-#           -   shift layer
+#           -   shift
 #           -   fingerId
 #           -   keyId
 
@@ -31,32 +31,25 @@ import string
 #   i wanna calcute not a real "distance", like adumb, but a how many keys to next key
 #   fint sort list of keys
 
+sorterLetters = []
+
+
 def output():
+
     seeAnotherFile = False
     if seeAnotherFile:
         print("kek lol")
     else:
         file = open("book-war-and-peace.txt").read().lower()
-        # file = open("old.py").read().lower()
         alphabet = list(string.ascii_lowercase)
-        # letterCounts = []
         dictLetterToCount = {}
-        # dicCountToLetter = {}
 
         for index in range(0, len(alphabet)-1):
             count = file.count(alphabet[index])
             symbol = alphabet[index]
             dictLetterToCount[symbol] = count
-            # dicCountToLetter[count] = symbol
-            # letterCounts.append(file.count(alphabet[index]))
-            # dictLetterToCount[alphabet[index]] = letterCounts[index]
-            # dicCountToLetter[letterCounts[index]] = alphabet[index]
 
-        # letterCounts.sort(reverse=True)
-        # print(letterCounts)
-        # print(dictLetterToCount)
-        # print(dicCountToLetter)
-        sorterLetters = sorted(dictLetterToCount, key=dictLetterToCount.get, reverse=True)
+        sorterLetters.append(sorted(dictLetterToCount, key=dictLetterToCount.get, reverse=True))
         print(sorterLetters)
 
     homeRow = sorterLetters[:9]
@@ -66,4 +59,3 @@ def output():
     print(upperRow)
     print(homeRow)
     print(bottomRow)
-
