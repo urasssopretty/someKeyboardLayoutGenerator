@@ -3,10 +3,9 @@
 I'm developing this project in my free time so progress can be slow and code quality is terrible
 
 ### TO-DO:
-- [ ] add stuff for parse json layout
-- [ ] add test for keyboard layouts
-- [ ] add docs for test
-- [ ] add math based generator
+- [ ] parse layout from json
+- [ ] add some tests for keyboard layouts
+- [ ] add math based keyb generator
 - [ ] add export of layout
 - [ ] Release 0.5
 - [ ] add generator based on genetic algorithms
