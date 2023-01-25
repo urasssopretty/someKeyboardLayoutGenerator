@@ -9,12 +9,10 @@ import testLayout
 # changeZXCV = questionnaire.output()
 # textAnalysis.output()
 def main():
-    file = open("qwerty.txt").read()
-    fileLayout = json.loads(file)
-
-    layout = keyboardLayout(fileLayout["label"], fileLayout["fingerStart"], fileLayout["keys"])
+    layout = keyboardLayout("qwerty.txt")
 
     print(testLayout.distanceTestKeys(layout))
+    # print(layout.getKeys())
 
 
 if __name__ == '__main__':
