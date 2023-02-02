@@ -1,6 +1,9 @@
 {
     "keyboardType": "newstandard",
     "label": "QWERTY",
+    "author": "bibaboba",
+    "moreInfoUrl": "bibaboba",
+    "moreInfoText": "bibaboba",
     "fingerStart": {
         "1": 29,
         "2": 30,

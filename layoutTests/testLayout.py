@@ -1,4 +1,4 @@
-import distanceTest
+import distance
 
 
 ### tests

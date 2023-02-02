@@ -1,22 +1,21 @@
 import json
 
-from classLayout import keyboardLayout
-import questionnaire
-import textAnalysis
-import testLayout
-
+from layoutTests.distance import distanceTest
+from classLayout import KeyboardLayout
+# import questionnaire
+# import textAnalysis
+# import testLayout
 
 # changeZXCV = questionnaire.output()
 # textAnalysis.output()
 def main():
-    file = open("myQwerty.txt").read()
-    fileLayout = json.loads(file)
+    layoutFileName= "myQwerty.txt"
+    layout = KeyboardLayout(layoutFileName)
 
-    layout = keyboardLayout(fileLayout["label"], fileLayout["fingerStart"], fileLayout["keys"])
+    distanceTest(layout, layoutFileName)
 
-    print(testLayout.distanceTestKeys(layout))
+    # print(testLayout.distanceTestKeys(layout))
     # print(layout.getKeys())
-
 
 if __name__ == '__main__':
     main()

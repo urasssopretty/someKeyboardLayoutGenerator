@@ -9,14 +9,23 @@ import json
 #   -   keyboardType
 #   -   keys
 
-class singleKey(object):
-    def __init__(self, primary, shift, finger, someKeyid):
-        self.primaryLayer = primary
-        self.shiftLayer = shift
-        self.fingerID = finger
-        self.keyID = someKeyid
+class Key(object):
+    def __init__(self, someKey):
+        self.primaryLayer = someKey["primary"]
+        self.shiftLayer = someKey["shift"]
+        self.fingerID = someKey["finger"]
+        self.keyID = someKey["id"]
+    # def __init__(self, primary, shift, finger, someKeyid):
+    #     self.primaryLayer = primary
+    #     self.shiftLayer = shift
+    #     self.fingerID = finger
+    #     self.keyID = someKeyid
 
-class keyboardLayout(object):
+    def getFingerID(self):
+        return self.fingerID
+
+
+class KeyboardLayout(object):
     def __init__(self, fileName):
         file = json.loads(open(fileName).read())
         self.label = file["label"]
@@ -25,8 +34,14 @@ class keyboardLayout(object):
         self.moreInfoText = file["moreInfoText"]
         self.fingerStart = file["fingerStart"]
         self.keyboardType = file["keyboardType"]
-        self.keys = file["keys"]
+        self.keys = []
+        for keyIndex in range(len(file["keys"])):
+            self.keys.append(Key(file["keys"][keyIndex]))
+        # self.keys = file["keys"]
 
     def getKeys(self):
         return list(self.keys)
+
+    def getFingerStart(self):
+        return  list(self.fingerStart)
 
