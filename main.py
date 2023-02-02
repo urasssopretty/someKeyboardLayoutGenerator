@@ -15,6 +15,7 @@ def main():
     layout = keyboardLayout(fileLayout["label"], fileLayout["fingerStart"], fileLayout["keys"])
 
     print(testLayout.distanceTestKeys(layout))
+    # print(layout.getKeys())
 
 
 if __name__ == '__main__':
