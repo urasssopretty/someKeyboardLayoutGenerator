@@ -9,7 +9,7 @@ import testLayout
 # changeZXCV = questionnaire.output()
 # textAnalysis.output()
 def main():
-    file = open("qwerty.txt").read()
+    file = open("myQwerty.txt").read()
     fileLayout = json.loads(file)
 
     layout = keyboardLayout(fileLayout["label"], fileLayout["fingerStart"], fileLayout["keys"])

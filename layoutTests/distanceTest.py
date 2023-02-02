@@ -1,9 +1,4 @@
-### tests
-#   -   distance test
-#   -   hand ux
-#   -   another test
-
-def distanceTestKeys(KeyboardLayout):
+def distanceTestKeys(KeyboardLayout, FileName):
     keys = KeyboardLayout.getKeys()
 
     #   UPPER
@@ -14,6 +9,8 @@ def distanceTestKeys(KeyboardLayout):
         keys[14:27],
         keys[28:]
     ]
+
+    text = lower(file.open(FileName).read())
 
     finger = [[], [], [], [], [], [], [], [], [], []]
 
@@ -31,5 +28,4 @@ def distanceTestKeys(KeyboardLayout):
     # for letterIndex in range(len(file)):
     # for letter in file:
 
-
-    return finger
+    return rows
