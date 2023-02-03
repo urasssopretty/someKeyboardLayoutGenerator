@@ -12,7 +12,7 @@ def main():
     layoutFileName= "myQwerty.txt"
     layout = KeyboardLayout(layoutFileName)
 
-    distanceTest(layout, layoutFileName)
+    print(distanceTest(layout, "somenews.txt"))
 
     # print(testLayout.distanceTestKeys(layout))
     # print(layout.getKeys())

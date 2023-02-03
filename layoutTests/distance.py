@@ -1,26 +1,17 @@
-def distanceTest(KeyboardLayout, FileName):
-    text = open(FileName).read().lower()
+def distanceTest(KeyboardLayout, textFileName):
+    text = open(textFileName).read().lower()
     keys = KeyboardLayout.getKeys()
     startPoses = KeyboardLayout.getFingerStart()
+    keysUnderEachFinger = KeyboardLayout.getKeysUnderEachFinger()
 
-    # rows = [
-    #     keys[:13],      #   UPPER ROW
-    #     keys[14:27],    #   HOME ROW
-    #     keys[28:]       #   BOTTOM ROW
-    # ]
+    counter = 0
+    # for letter in text:
+    #     for fingerIndex in range(10):
+    #         for key in keysUnderEachFinger[fingerIndex]:
+    #             # if key.primary == letter and key.primary == startPoses[fingerIndex]:\
+    #             # print(startPoses[fingerIndex])
+    #             if key.primary == startPoses[fingerIndex]:
+    #                 print("pipka")
+                #     counter += 1
 
-    # for i in range(keys.size()):
-    #
-
-    keysUnderEachFinger = [[], [], [], [], [], [], [], [], [], []]
-
-    for key in keys:
-        for keyIndex in range(10):
-            lastUsedFingerIndex = key.getFingerID()
-            if lastUsedFingerIndex == (keyIndex + 1):
-                keysUnderEachFinger[keyIndex].append(lastUsedFingerIndex)
-
-    for i in range(len(keysUnderEachFinger)):
-        print(keysUnderEachFinger[i])
-
-    return 0
+    return counter
