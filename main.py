@@ -16,6 +16,7 @@ def main():
     layout = KeyboardLayout(layoutFileName)
     # print(layout.getKeys())
     print(classicDistanceTest(layout, "somenews.txt"))
+    print(distanceTest(layout, "somenews.txt"))
 
     # print(testLayout.distanceTestKeys(layout))
     # print(layout.getKeys())
