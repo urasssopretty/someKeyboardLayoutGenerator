@@ -1,6 +1,7 @@
 import json
 
 from layoutTests.distance import distanceTest
+from layoutTests.distance import classicDistanceTest
 from classLayout import KeyboardLayout
 # import questionnaire
 # import textAnalysis
@@ -14,7 +15,7 @@ def main():
     layoutFileName = "myQwerty.txt"
     layout = KeyboardLayout(layoutFileName)
     # print(layout.getKeys())
-    print(distanceTest(layout, "somenews.txt"))
+    print(classicDistanceTest(layout, "somenews.txt"))
 
     # print(testLayout.distanceTestKeys(layout))
     # print(layout.getKeys())

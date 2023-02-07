@@ -34,6 +34,8 @@ class Key(object):
     def getPrimary(self):
         return self.primary
 
+    def getKeyID(self):
+        return self.id
 
 
 class KeyboardLayout(object):
@@ -43,14 +45,18 @@ class KeyboardLayout(object):
         self.author = file["author"]
         self.moreInfoUrl = file["moreInfoUrl"]
         self.moreInfoText = file["moreInfoText"]
-        self.fingerStart = []
-        for index in range(1, 11):
-            self.fingerStart.append(file["fingerStart"][str(index)])
         self.keyboardType = file["keyboardType"]
         self.keys = []
         if self.keyboardType == "standard":
             for index in range(len(file["keys"])):
                 self.keys.append(Key(file["keys"][index], index))
+        self.fingerStart = []
+        for index in range(1, 11):
+            startKeyId = file["fingerStart"][str(index)]
+            for key in self.keys:
+                if startKeyId == key.getKeyID():
+                    self.fingerStart.append(key)
+                    break
 
     def getKeys(self):
         return list(self.keys)
