@@ -8,14 +8,17 @@ from classLayout import KeyboardLayout
 
 # changeZXCV = questionnaire.output()
 # textAnalysis.output()
-def main():
-    layoutFileName= "myQwerty.txt"
-    layout = KeyboardLayout(layoutFileName)
 
+
+def main():
+    layoutFileName = "myQwerty.txt"
+    layout = KeyboardLayout(layoutFileName)
+    # print(layout.getKeys())
     print(distanceTest(layout, "somenews.txt"))
 
     # print(testLayout.distanceTestKeys(layout))
     # print(layout.getKeys())
+
 
 if __name__ == '__main__':
     main()

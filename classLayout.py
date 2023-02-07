@@ -9,15 +9,31 @@ import json
 #   -   keyboardType
 #   -   keys
 
-# class Key(object):
-#     def __init__(self, someKey):
-#         self.primary = someKey["primary"]
-#         self.shift = someKey["shift"]
-#         self.finger = someKey["finger"]
-#         self.id = someKey["id"]
+class Key(object):
+    def __init__(self, someKey, index):
+        self.primary = someKey["primary"]
+        self.shift = someKey["shift"]
+        self.finger = someKey["finger"]
+        self.id = someKey["id"]
 
-    # def getFingerID(self):
-    #     return self.finger
+        if index < 14:
+            self.position = (index, 0)
+        elif index < 28:
+            self.position = (index + 0.25, 0)
+        elif index < 40:
+            self.position = (index + 0.5, 0)
+        else:
+            self.position = (-999, -999)
+
+    def getFingerID(self):
+        return self.finger
+
+    def getPosition(self):
+        return self.position
+
+    def getPrimary(self):
+        return self.primary
+
 
 
 class KeyboardLayout(object):
@@ -30,27 +46,25 @@ class KeyboardLayout(object):
         self.fingerStart = []
         for index in range(1, 11):
             self.fingerStart.append(file["fingerStart"][str(index)])
-
         self.keyboardType = file["keyboardType"]
-        self.keys = file["keys"]
-        # for keyIndex in range(len(file["keys"])):
-        #     self.keys.append(Key(file["keys"][keyIndex]))
-        print(self.keys[0])
-        # self.keys = file["keys"]
+        self.keys = []
+        if self.keyboardType == "standard":
+            for index in range(len(file["keys"])):
+                self.keys.append(Key(file["keys"][index], index))
 
     def getKeys(self):
         return list(self.keys)
 
     def getFingerStart(self):
-        return  list(self.fingerStart)
+        return list(self.fingerStart)
 
     def getKeysUnderEachFinger(self):
         keysUnderEachFinger = [[], [], [], [], [], [], [], [], [], []]
 
         for key in self.keys:
             for keyIndex in range(10):
-                # if key.getfingeris( == (keyIndex + 1):
-                if key["finger"] == (keyIndex + 1):
+                # if key["finger"] == (keyIndex + 1):
+                if key.getFingerID() == (keyIndex + 1):
                     keysUnderEachFinger[keyIndex].append(key)
 
         return keysUnderEachFinger
@@ -59,5 +73,5 @@ class KeyboardLayout(object):
         return  [
                     self.keys[:13],
                     self.keys[14:27],
-                    self.keys[28]
+                    self.keys[28:]
                 ]
