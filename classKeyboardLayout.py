@@ -1,35 +1,52 @@
-import json
-from classKeyboardKey import Key
+#   JSON FILE STRUCTURE (by Keyboard layout analyzer)
+#   label           -   name of layout
+#   author          -   author name
+#   moreInfoUrl     -   more information about layout
+#   moreInfoText    -   brief description of the layout
+#   fingerStart     -   list of id keys that should have a finger on it at the start of typing
+#                       but in class its LIST OF KEYS
+#   keyboardType    -   type of keyboard (how many keys, what form factor) (standard type its ANSI layout with 101/104 keys)
+#   keys            -   list of keys
 
-#   json file structure (by Keyboard layout analizer)
-#   -   label
-#   -   author
-#   -   moreInfoUrl
-#   -   moreInfoText
-#   -   fingerStart
-#   -   keyboardType
-#   -   keys
+### FILE STRUCTURE MUST CONTAIN THE FOLLOWING FIELDS: label, fingerStart, keyboardType, keys
+
+from classKeyboardKey import Key
 
 
 class KeyboardLayout(object):
-    def __init__(self, fileName):
-        file = json.loads(open(fileName).read())
-        self.label = file["label"]
-        self.author = file["author"]
-        self.moreInfoUrl = file["moreInfoUrl"]
-        self.moreInfoText = file["moreInfoText"]
-        self.keyboardType = file["keyboardType"]
+    def __init__(self, layoutFile):
+        self.label = layoutFile["label"]
+        self.keyboardType = layoutFile["keyboardType"]
+
         self.keys = []
         if self.keyboardType == "standard":
-            for index in range(len(file["keys"])):
-                self.keys.append(Key(file["keys"][index], index))
+            for index in range(len(layoutFile["keys"])):
+                self.keys.append(Key(layoutFile["keys"][index], index))
+        else:
+            print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
+
         self.fingerStart = []
-        for index in range(1, 11):
-            startKeyId = file["fingerStart"][str(index)]
+        startKeyId = layoutFile["fingerStart"]
+        for keyID in startKeyId:
             for key in self.keys:
-                if startKeyId == key.getKeyID():
+                if keyID == key.getKeyID():
                     self.fingerStart.append(key)
                     break
+
+        # for index in range(1, 11):
+        #     startKeyId = layoutFile["fingerStart"][str(index)]
+        #     for key in self.keys:
+        #         if startKeyId == key.getKeyID():
+        #             self.fingerStart.append(key)
+        #             break
+
+        for jsonKey in layoutFile:
+            if jsonKey == "author":
+                self.author = layoutFile["author"]
+            elif jsonKey == "moreInfoUrl":
+                self.moreInfoUrl = layoutFile["moreInfoUrl"]
+            elif jsonKey == "moreInfoText":
+                self.moreInfoText = layoutFile["moreInfoText"]
 
     def getKeys(self):
         return list(self.keys)
@@ -49,8 +66,11 @@ class KeyboardLayout(object):
         return keysUnderEachFinger
 
     def getRows(self):
-        return  [
-                    self.keys[:12],
-                    self.keys[13:24],
-                    self.keys[24:34]
-        ]
+        if self.keyboardType == "standard":
+            return  [
+                        self.keys[:12],
+                        self.keys[13:24],
+                        self.keys[24:34]
+                    ]
+        else:
+            return -999
