@@ -1,6 +1,7 @@
 import json
+from classKeyboardKey import Key
 
-#   json file structure (Keyboard layout analizer)
+#   json file structure (by Keyboard layout analizer)
 #   -   label
 #   -   author
 #   -   moreInfoUrl
@@ -8,34 +9,6 @@ import json
 #   -   fingerStart
 #   -   keyboardType
 #   -   keys
-
-class Key(object):
-    def __init__(self, someKey, index):
-        self.primary = someKey["primary"]
-        self.shift = someKey["shift"]
-        self.finger = someKey["finger"]
-        self.id = someKey["id"]
-
-        if index < 14:
-            self.position = (index, 0)
-        elif index < 28:
-            self.position = (index + 0.25, 0)
-        elif index < 40:
-            self.position = (index + 0.5, 0)
-        else:
-            self.position = (-999, -999)
-
-    def getFingerID(self):
-        return self.finger
-
-    def getPosition(self):
-        return self.position
-
-    def getPrimary(self):
-        return self.primary
-
-    def getKeyID(self):
-        return self.id
 
 
 class KeyboardLayout(object):
@@ -77,7 +50,7 @@ class KeyboardLayout(object):
 
     def getRows(self):
         return  [
-                    self.keys[:13],
-                    self.keys[14:27],
-                    self.keys[28:]
-                ]
+                    self.keys[:12],
+                    self.keys[13:24],
+                    self.keys[24:34]
+        ]

@@ -34,7 +34,7 @@ def distanceTest(KeyboardLayout, textFileName):
         for fingerIndex in range(10):
             if fingerIndex == 4 or fingerIndex == 5:
                 continue
-            print(fingerIndex)
+            # print(fingerIndex)
             for key in keysUnderEachFinger[fingerIndex]:
                 if key.getPrimary() == letter and key != lastKey[fingerIndex]:
                     totalDistance += math.dist(lastKey[fingerIndex].getPosition(), key.getPosition())
