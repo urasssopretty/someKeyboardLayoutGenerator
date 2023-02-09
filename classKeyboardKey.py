@@ -26,10 +26,10 @@ class Key(object):
             elif 0 < self.id < 5:
                 self.position = (1 + self.id, 0)
             elif 4 < self.id < 9:
-                self.position = (, 0)
-            elif 0 < self.id < 5:
-                self.position = (2, 0)
-
+                self.position = (self.id + 0.5, 0)
+            elif 9 < self.id < 13:
+                self.position = (self.id + 1, 0)
+            elif self.id
 
 
             # if keyID < 13:

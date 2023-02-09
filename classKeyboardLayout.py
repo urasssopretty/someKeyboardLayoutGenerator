@@ -10,6 +10,7 @@
 
 ### FILE STRUCTURE MUST CONTAIN THE FOLLOWING FIELDS: label, fingerStart, keyboardType, keys
 
+
 from classKeyboardKey import Key
 
 
