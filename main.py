@@ -20,8 +20,9 @@ def main():
     #     for key in row:
     #         print(key.getPrimary(), key.getPosition())
 
-    print('%.3f' % classicDistanceTest(layout, "somenews.txt"))
-    print('%.3f' % distanceTest(layout, "somenews.txt"))
+    print(layout.getRows())
+    # print('%.3f' % classicDistanceTest(layout, "somenews.txt"))
+    # print('%.3f' % distanceTest(layout, "somenews.txt"))
 
 
 if __name__ == '__main__':
