@@ -23,28 +23,16 @@ class Key(object):
         #   I think about to add filed "size" for keys, but I want to have open "standard" of json keyb layout
         #   so now if key will be a wide (non 1u size) only if a next key have a some distance from pos of current key
         if keyboardType == "standard":
-            if self.id < 14:
+            if index < 13:
                 self.position = (self.id + .5, .5)
-            elif self.id == 14:
+            elif 12 < index < 24:
                 self.position = (self.id + .75, 1.5)
-            elif self.id < 28:
-                self.position = (self.id + 1, 1.5)
-            elif self.id == 28:
+            elif 23 < index < 34:
                 self.position = (self.id + .875, 2.5)
-            elif self.id < 41:
-                self.position = (0, 0)
-
-
-            # if keyID < 13:
-            #     self.position = (';', 0)
-            # elif keyID < 24:
-            #     self.position = (index + 0.25, 1)
-            # elif keyID < 34:
-            #     self.position = (index + 0.5, 2)
-            # else:
-            #     self.position = (-999, -999)
+            else:
+                self.position = (-999, -999)
         else:
-            self.position(-9999, -9999)
+            self.position = (-9999, -9999)
 
     def getFingerID(self):
         return self.finger
@@ -57,3 +45,10 @@ class Key(object):
 
     def getKeyID(self):
         return self.id
+
+    def getNullKey(self, fingerID):
+        self.primary = None
+        self.shift = None
+        self.id = None
+        self.finger = fingerID
+        return self
