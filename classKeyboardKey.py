@@ -7,27 +7,29 @@
 ### KEY STRUCTURE IN JSON FILE MUST CONTAIN THE FOLLOWING FIELDS: primary, finger, id
 
 class Key(object):
-    def __init__(self, keyStruct, index, keyboardType):
+    def __init__(self, keyStruct, keyboardType):
         for jsonKey in keyStruct:
-            if jsonKey == "shift":
-                self.shift = keyStruct["shift"]
+            if jsonKey == "shift" and keyStruct["shift"] > 0:
+                    self.shift = keyStruct["shift"]
             elif jsonKey not in "primary finger id":
                 print("file contains strange json-key in keys\n",
                       "more info:\n",
                       keyStruct)
 
-        self.primary = keyStruct["primary"]
+        if keyStruct["primary"] > 0:
+            self.primary = chr(keyStruct["primary"])
+
         self.finger = keyStruct["finger"]
         self.id = keyStruct["id"]
 
         #   I think about to add filed "size" for keys, but I want to have open "standard" of json keyb layout
         #   so now if key will be a wide (non 1u size) only if a next key have a some distance from pos of current key
         if keyboardType == "standard":
-            if index < 13:
+            if 14 < self.id < 28:
                 self.position = (self.id + .5, .5)
-            elif 12 < index < 24:
+            elif 28 < self.id < 40:
                 self.position = (self.id + .75, 1.5)
-            elif 23 < index < 34:
+            elif 41 < self.id < 51:
                 self.position = (self.id + .875, 2.5)
             else:
                 self.position = (-999, -999)

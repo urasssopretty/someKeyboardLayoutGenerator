@@ -221,6 +221,16 @@
             "shift": "?",
             "finger": 10,
             "id": 51
+        },
+        {
+            "primary": " ",
+            "finger": 5,
+            "id": 56
+        },
+                {
+            "primary": " ",
+            "finger": 4,
+            "id": 56
         }
     ]
 }

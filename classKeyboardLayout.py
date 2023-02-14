@@ -21,8 +21,10 @@ class KeyboardLayout(object):
 
         self.keys = []
         if self.keyboardType == "standard":
-            for index in range(len(layoutFile["keys"])):
-                self.keys.append(Key(layoutFile["keys"][index], index, "standard"))
+            somekeys = layoutFile["keys"]
+            for key in somekeys:
+                if key["primary"] > 0:
+                    self.keys.append(Key(key, "standard"))
         else:
             print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
 
