@@ -6,11 +6,12 @@
 
 ### KEY STRUCTURE IN JSON FILE MUST CONTAIN THE FOLLOWING FIELDS: primary, finger, id
 
+
 class Key(object):
     def __init__(self, keyStruct, keyboardType):
         for jsonKey in keyStruct:
             if jsonKey == "shift" and keyStruct["shift"] > 0:
-                self.shift = keyStruct["shift"]
+                self.shift = chr(keyStruct["shift"])
             elif jsonKey not in "primary finger id":
                 print("file contains strange json-key in keys\n",
                       "more info:\n",
@@ -33,6 +34,15 @@ class Key(object):
                 self.position = (-999, -999)
         else:
             self.position = (-9999, -9999)
+
+
+    def __init__(self, primary, finger, id, shift=0):
+        self.primary = primary,
+        self.finger = finger,
+        self.id = id,
+        if shift:
+            self.shift = shift
+
 
     def getFingerID(self):
         return self.finger
