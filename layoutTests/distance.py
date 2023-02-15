@@ -1,8 +1,9 @@
 import math
 
+# def classicDistanceTest(KeyboardLayout, textFileName, outputMetrics="default"):
 
 ### test when pos of fingers is start pos at home row
-def classicDistanceTest(KeyboardLayout, textFileName):
+def classicDistanceTest(KeyboardLayout, textFileName, outputMetrics="default"):
     text = open(textFileName).read().lower().replace(' ', '')
     keys = KeyboardLayout.getKeys()
     startPoses = KeyboardLayout.getFingerStart()
@@ -28,19 +29,18 @@ def distanceTest(KeyboardLayout, textFileName):
     startPoses = KeyboardLayout.getFingerStart()
     keysUnderEachFinger = KeyboardLayout.getKeysUnderEachFinger()
     lastKey = startPoses
-    totalDistance = 0
+    distance = 0
 
     for letter in text:
         for fingerIndex in range(10):
             if fingerIndex == 4 or fingerIndex == 5:
                 continue
 
-            # print(fingerIndex)
             for key in keysUnderEachFinger[fingerIndex]:
                 if key.getPrimary() == letter and key != lastKey[fingerIndex]:
-                    totalDistance += math.dist(lastKey[fingerIndex].getPosition(), key.getPosition())
+                    distance += math.dist(lastKey[fingerIndex].getPosition(), key.getPosition())
                     lastKey[fingerIndex] = key
                     break
 
-    return totalDistance
+    return distance
 

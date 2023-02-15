@@ -21,27 +21,24 @@ class KeyboardLayout(object):
 
         self.keys = []
         if self.keyboardType == "standard":
-            somekeys = layoutFile["keys"]
-            for key in somekeys:
-                if key["primary"] > 0:
+            keyList = layoutFile["keys"]
+            for key in keyList:
+                if 14 < key["id"] < 28\
+                        or 28 < key["id"] < 40\
+                        or 41 < key["id"] < 51:
                     self.keys.append(Key(key, "standard"))
         else:
             print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
 
         self.fingerStart = []
-        startKeyId = layoutFile["fingerStart"]
-        for keyID in startKeyId:
+        fingersStartKeyId = layoutFile["fingerStart"]
+
+        for index in range(1, len(fingersStartKeyId) + 1):
             for key in self.keys:
-                if keyID == key.getKeyID():
+                if fingersStartKeyId[str(index)] == key.getKeyId()\
+                        or fingersStartKeyId[str(index)] == 56:
                     self.fingerStart.append(key)
                     break
-
-        # for index in range(1, 11):
-        #     startKeyId = layoutFile["fingerStart"][str(index)]
-        #     for key in self.keys:
-        #         if startKeyId == key.getKeyID():
-        #             self.fingerStart.append(key)
-        #             break
 
         for jsonKey in layoutFile:
             if jsonKey == "author":
@@ -50,6 +47,13 @@ class KeyboardLayout(object):
                 self.moreInfoUrl = layoutFile["moreInfoUrl"]
             elif jsonKey == "moreInfoText":
                 self.moreInfoText = layoutFile["moreInfoText"]
+
+    def __init(self, label, keyboardType, keys, fingerStart, author="keyboard layout generator by primate"):
+        self.label = label
+        self.keyboardType = keyboardType
+        self.keys = keys
+        self.fingerStart = fingerStart
+        self.author = author
 
     def getKeys(self):
         return list(self.keys)
@@ -62,7 +66,6 @@ class KeyboardLayout(object):
 
         for key in self.keys:
             for keyIndex in range(10):
-                # if key["finger"] == (keyIndex + 1):
                 if key.getFingerID() == (keyIndex + 1):
                     keysUnderEachFinger[keyIndex].append(key)
 
@@ -71,14 +74,14 @@ class KeyboardLayout(object):
     def getRows(self):
         if self.keyboardType == "standard":
             return  [
-                        self.keys[13:28],
-                        self.keys[29:41],
-                        self.keys[42:53:]
+                        self.keys[:12],
+                        self.keys[13:24],
+                        self.keys[24:34]
                     ]
-            # return  [
-            #             self.keys[:12],
-            #             self.keys[13:24],
-            #             self.keys[24:34]
-            #         ]
+            # return [
+            #     self.keys[13:28],
+            #     self.keys[29:41],
+            #     self.keys[42:53:]
+            # ]
         else:
             return -999

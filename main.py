@@ -5,18 +5,15 @@ from classKeyboardLayout import KeyboardLayout
 
 
 def main():
-    # layoutFileName = "myQwerty.txt"
-    layoutFileName = "qwerty.txt"
+    layoutFileName = "layouts/normalQwerty.txt"
     layoutFile = json.loads(open(layoutFileName).read())
-
     layout = KeyboardLayout(layoutFile)
 
-    for key in layout.getKeys():
-            print(key.getPrimary(), key.getPosition())
+    # for key in layout.getKeys():
+    #     print(key.getPrimary(), key.getPosition())
 
-    # print(layout.getRows())
-    print('%.3f' % classicDistanceTest(layout, "somenews.txt"))
-    print('%.3f' % distanceTest(layout, "somenews.txt"))
+    print('%.3f' % classicDistanceTest(layout, "testTextes/somenews.txt", "metric"))
+    print('%.3f' % distanceTest(layout, "testTextes/somenews.txt"))
 
 
 if __name__ == '__main__':

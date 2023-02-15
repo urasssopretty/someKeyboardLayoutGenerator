@@ -10,15 +10,13 @@ class Key(object):
     def __init__(self, keyStruct, keyboardType):
         for jsonKey in keyStruct:
             if jsonKey == "shift" and keyStruct["shift"] > 0:
-                    self.shift = keyStruct["shift"]
+                self.shift = keyStruct["shift"]
             elif jsonKey not in "primary finger id":
                 print("file contains strange json-key in keys\n",
                       "more info:\n",
                       keyStruct)
 
-        if keyStruct["primary"] > 0:
-            self.primary = chr(keyStruct["primary"])
-
+        self.primary = chr(keyStruct["primary"])
         self.finger = keyStruct["finger"]
         self.id = keyStruct["id"]
 
@@ -26,11 +24,11 @@ class Key(object):
         #   so now if key will be a wide (non 1u size) only if a next key have a some distance from pos of current key
         if keyboardType == "standard":
             if 14 < self.id < 28:
-                self.position = (self.id + .5, .5)
+                self.position = (self.id - 13, .5)   #   -13.5 + .5
             elif 28 < self.id < 40:
-                self.position = (self.id + .75, 1.5)
+                self.position = (self.id - 26.75, 1.5)   # -13.5 - 13 + .75
             elif 41 < self.id < 51:
-                self.position = (self.id + .875, 2.5)
+                self.position = (self.id - 39.25, 2.5)   #  ....
             else:
                 self.position = (-999, -999)
         else:
@@ -45,7 +43,10 @@ class Key(object):
     def getPrimary(self):
         return self.primary
 
-    def getKeyID(self):
+    def getShift(self):
+        return hasattr(self, "shift") if self.shift else 0
+
+    def getKeyId(self):
         return self.id
 
     def getNullKey(self, fingerID):
