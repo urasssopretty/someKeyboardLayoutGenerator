@@ -48,12 +48,12 @@ class KeyboardLayout(object):
             elif jsonKey == "moreInfoText":
                 self.moreInfoText = layoutFile["moreInfoText"]
 
-    def __init(self, label, keyboardType, keys, fingerStart, author="keyboard layout generator by primate"):
-        self.label = label
-        self.keyboardType = keyboardType
-        self.keys = keys
-        self.fingerStart = fingerStart
-        self.author = author
+    # def __init(self, label, keyboardType, keys, fingerStart, author="keyboard layout generator by primate"):
+    #     self.label = label
+    #     self.keyboardType = keyboardType
+    #     self.keys = keys
+    #     self.fingerStart = fingerStart
+    #     self.author = author
 
     def getKeys(self):
         return list(self.keys)
@@ -78,10 +78,5 @@ class KeyboardLayout(object):
                         self.keys[13:24],
                         self.keys[24:34]
                     ]
-            # return [
-            #     self.keys[13:28],
-            #     self.keys[29:41],
-            #     self.keys[42:53:]
-            # ]
         else:
-            return -999
+            return 1

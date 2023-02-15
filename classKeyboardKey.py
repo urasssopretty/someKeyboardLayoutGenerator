@@ -36,12 +36,12 @@ class Key(object):
             self.position = (-9999, -9999)
 
 
-    def __init__(self, primary, finger, id, shift=0):
-        self.primary = primary,
-        self.finger = finger,
-        self.id = id,
-        if shift:
-            self.shift = shift
+    # def __init__(self, primary, finger, id, shift=0):
+    #     self.primary = primary,
+    #     self.finger = finger,
+    #     self.id = id,
+    #     if shift:
+    #         self.shift = shift
 
 
     def getFingerID(self):

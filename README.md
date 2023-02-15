@@ -4,7 +4,7 @@ I'm developing this project in my free time so progress can be slow and code qua
 
 ### TO-DO:
 - [X] parse layout from json
-- [ ] add some tests for keyboard layouts
+- [X] add some tests for keyboard layouts
 - [ ] add math based keyb generator
 - [ ] add questionnaire for generator (change or dont change ZXCV, should consonants and vowels be on opposite sides, etc)
 - [ ] add export of layout
