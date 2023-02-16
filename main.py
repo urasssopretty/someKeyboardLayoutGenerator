@@ -1,6 +1,7 @@
 import json
-from layoutTests.testLayout import LayoutTest
-from classKeyboardLayout import KeyboardLayout
+from layoutTest.distanceTest import *
+from layoutTest.textTest import *
+from classKeyboardLayout import *
 
 
 def main():
@@ -10,10 +11,10 @@ def main():
 
     textFileName = "testTextes/somenews.txt"
 
-    print('%.3f' % LayoutTest.classicDistanceTest(layout, textFileName),
-          '%.3f' % LayoutTest.distanceTest(layout, textFileName),
-          LayoutTest.fingerStats(layout, textFileName)
-    )
+    print("classic distance test:", '%.3f' % classicDistanceTest(layout, textFileName))
+    print("distance test:", '%.3f' % someDistanceTest(layout, textFileName))
+    print("finger stats:", end=" ")
+    for element in fingerStats(layout, textFileName): print(element, end=" ")
 
 
 if __name__ == '__main__':
