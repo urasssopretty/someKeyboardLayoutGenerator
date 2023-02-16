@@ -50,7 +50,7 @@ class LayoutTest(object):
 
         return distance
 
-    def fingerStats(fileName, layout):
+    def fingerStats(layout, fileName):
         text = open(fileName).read()
         # text = open(fileName).read().replace(' ', '')
         keys = layout.getKeys()
