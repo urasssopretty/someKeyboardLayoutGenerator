@@ -4,35 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "d0467e6cddecd459",
+        "id": "0aa95c9de87fb881",
         "type": "tabs",
         "children": [
           {
-            "id": "1528b99945a608e8",
+            "id": "c4a17427e6778d5a",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "keyboard basics/table of contents.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "35877cb19c1927fb",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "readme.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -98,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "readme.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -115,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "readme.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -137,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "readme.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -159,10 +138,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "35877cb19c1927fb",
+  "active": "c4a17427e6778d5a",
   "lastOpenFiles": [
-    "keyboard basics/what is keyboard.md",
     "keyboard basics/table of contents.md",
-    "readme.md"
+    "readme.md",
+    "keyboard basics/what is keyboard.md"
   ]
 }
