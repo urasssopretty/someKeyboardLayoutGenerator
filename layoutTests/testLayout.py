@@ -1,17 +1,9 @@
-# import distanceTest
-# import fingerStatste
 import math
-from classKeyboardLayout import KeyboardLayout
-
-### want to realize tests
-#   -   distance test
-#   -   hand ux
-#   -   another test
-
+# from classKeyboardLayout import KeyboardLayout
 
 class LayoutTest(object):
-    ### test when pos of fingers is start pos at home row
     def classicDistanceTest(KeyboardLayout, textFileName):
+        ### in this text pos of fingers always at start poses (home row)
         text = open(textFileName).read().lower().replace(' ', '')
         keys = KeyboardLayout.getKeys()
         startPoses = KeyboardLayout.getFingerStart()
