@@ -9,11 +9,12 @@
 
 class Key(object):
     def __init__(self, keyStruct, keyboardType):
-        for jsonKey in keyStruct:
-            if jsonKey == "shift" and keyStruct["shift"] > 0:
+        for fieldName in keyStruct:
+            # if fieldName == "shift" and keyStruct["shift"] > 0:
+            if fieldName == "shift":
                 self.shift = chr(keyStruct["shift"])
-            elif jsonKey not in "primary finger id":
-                print("file contains strange json-key in keys\n",
+            elif fieldName not in "primary finger id":
+                print("file contains strange json-key in keys array\n",
                       "more info:\n",
                       keyStruct)
 
@@ -35,33 +36,31 @@ class Key(object):
         else:
             self.position = (-9999, -9999)
 
-
-    # def __init__(self, primary, finger, id, shift=0):
-    #     self.primary = primary,
-    #     self.finger = finger,
-    #     self.id = id,
-    #     if shift:
-    #         self.shift = shift
-
-
-    def getFingerID(self):
-        return self.finger
-
-    def getPosition(self):
-        return self.position
+    def createIsntanceFromFields(self, primary, finger, id, shift=0):
+        self.primary: primary
+        self.finger: finger
+        self.id: id
+        if shift:
+            self.shift: shift
 
     def getPrimary(self):
         return self.primary
 
-    def getShift(self):
-        return hasattr(self, "shift") if self.shift else 0
+    def getFinger(self):
+        return self.finger
 
     def getKeyId(self):
         return self.id
 
-    def getNullKey(self, fingerID):
+    def getPosition(self):
+        return self.position
+
+    def getShift(self):
+        return hasattr(self, "shift") if self.shift else 0
+
+    def getNullKey(self, fingerId=1):
         self.primary = None
         self.shift = None
         self.id = None
-        self.finger = fingerID
+        self.finger = fingerId
         return self

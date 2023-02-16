@@ -1,6 +1,7 @@
-import distanceTest
-import fingerStatste
+# import distanceTest
+# import fingerStatste
 import math
+from classKeyboardLayout import KeyboardLayout
 
 ### want to realize tests
 #   -   distance test

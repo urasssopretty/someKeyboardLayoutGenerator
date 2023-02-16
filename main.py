@@ -16,7 +16,7 @@ def main():
 
     # print('%.3f' % classicDistanceTest(layout, "testTextes/somenews.txt", "metric"))
     # print('%.3f' % distanceTest(layout, "testTextes/somenews.txt"))
-    print(fingerStats("testTextes/somenews.txt", layout))
+    print(LayoutTest.fingerStats("testTextes/somenews.txt", layout))
 
 if __name__ == '__main__':
     main()

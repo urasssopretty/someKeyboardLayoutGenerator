@@ -26,7 +26,7 @@ class KeyboardLayout(object):
                 if 14 < key["id"] < 28\
                         or 28 < key["id"] < 40\
                         or 41 < key["id"] < 51:
-                    self.keys.append(Key(key, "standard"))
+                    self.keys.append(Key(key, "standard", ))
         else:
             print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
 
@@ -66,7 +66,7 @@ class KeyboardLayout(object):
 
         for key in self.keys:
             for keyIndex in range(10):
-                if key.getFingerID() == (keyIndex + 1):
+                if key.getFinger() == (keyIndex + 1):
                     keysUnderEachFinger[keyIndex].append(key)
 
         return keysUnderEachFinger
@@ -80,3 +80,23 @@ class KeyboardLayout(object):
                     ]
         else:
             return 1
+
+class KeyboardLayoutFromFile(KeyboardLayout):
+    def __init__(self, label, keyboardType, keys, fingerStart, author="", moreInfoUrl="", moreInfoText=""):
+        self.label: label
+        self.keyboardType: keyboardType
+        self.keys: keys
+        self.fingerStart: fingerStart
+
+        if author == "":
+            self.author = "keyboard layout generator by p8"
+        else:
+            self.author = author
+
+        if moreInfoUrl != "":
+            self.moreInfoUrl = moreInfoUrl
+
+        if moreInfoText != "":
+            self.moreInfoText = moreInfoText
+
+
