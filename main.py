@@ -10,8 +10,6 @@ def main():
     layoutFile = json.loads(open(layoutFileName).read())
     layout = KeyboardLayout(layoutFile)
 
-
-
     # charStats(open("testTextes/alice_in_wonderland.txt").read())
 
     # rows = layout.getRows()
