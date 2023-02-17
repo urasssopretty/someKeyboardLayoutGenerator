@@ -5,7 +5,8 @@
 #   moreInfoText    -   brief description of the layout
 #   fingerStart     -   list of id keys that should have a finger on it at the start of typing
 #                       but in class its LIST OF KEYS
-#   keyboardType    -   type of keyboard (how many keys, what form factor) (standard type its ANSI layout with 101/104 keys)
+#   keyboardType    -   type of keyboard (how many keys, what form factor)
+#   TODO need to rewrite this arg: (standard type its ANSI layout with 101/104 keys)
 #   keys            -   list of keys
 
 ### FILE STRUCTURE MUST CONTAIN THE FOLLOWING FIELDS: label, fingerStart, keyboardType, keys
@@ -23,20 +24,20 @@ class KeyboardLayout(object):
         if self.keyboardType == "standard":
             keyList = layoutFile["keys"]
             for key in keyList:
-                if 14 < key["id"] < 28\
-                        or 28 < key["id"] < 40\
+                if 14 < key["id"] < 28 \
+                        or 28 < key["id"] < 40 \
                         or 41 < key["id"] < 51:
                     self.keys.append(Key(key, "standard", ))
         else:
             print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
 
         self.fingerStart = []
-        fingersStartKeyId = layoutFile["fingerStart"]
+        fingerStart = layoutFile["fingerStart"]
 
-        for index in range(1, len(fingersStartKeyId) + 1):
+        for index in range(1, len(fingerStart) + 1):
             for key in self.keys:
-                if fingersStartKeyId[str(index)] == key.getKeyId()\
-                        or fingersStartKeyId[str(index)] == 56:
+                if fingerStart[str(index)] == key.getKeyId()\
+                        or fingerStart[str(index)] == 56:
                     self.fingerStart.append(key)
                     break
 
@@ -48,12 +49,21 @@ class KeyboardLayout(object):
             elif jsonKey == "moreInfoText":
                 self.moreInfoText = layoutFile["moreInfoText"]
 
-    # def __init(self, label, keyboardType, keys, fingerStart, author="keyboard layout generator by primate"):
-    #     self.label = label
-    #     self.keyboardType = keyboardType
-    #     self.keys = keys
-    #     self.fingerStart = fingerStart
-    #     self.author = author
+    # @classmethod
+    def initFromArgs(self, label, fingerStart, keys, author="", keyboardType="standard", moreInfoUrl="", moreInfoText=""):
+        self.label = label
+        self.fingerStart = fingerStart
+        self.keyboardType = keyboardType
+        self.keys = keys
+        self.fingerStart = fingerStart
+
+        if not author:
+            self.author: "keyboard layout generator by urasssopretty"
+        else:
+            self.author: author
+
+        self.moreInfoUrl = moreInfoUrl
+        self.moreInfoText = moreInfoText
 
     def getKeys(self):
         return list(self.keys)
@@ -80,23 +90,4 @@ class KeyboardLayout(object):
                     ]
         else:
             return 1
-
-class KeyboardLayoutFromFile(KeyboardLayout):
-    def __init__(self, label, keyboardType, keys, fingerStart, author="", moreInfoUrl="", moreInfoText=""):
-        self.label: label
-        self.keyboardType: keyboardType
-        self.keys: keys
-        self.fingerStart: fingerStart
-
-        if author == "":
-            self.author = "keyboard layout generator by p8"
-        else:
-            self.author = author
-
-        if moreInfoUrl != "":
-            self.moreInfoUrl = moreInfoUrl
-
-        if moreInfoText != "":
-            self.moreInfoText = moreInfoText
-
 

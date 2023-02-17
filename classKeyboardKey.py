@@ -10,7 +10,6 @@
 class Key(object):
     def __init__(self, keyStruct, keyboardType):
         for fieldName in keyStruct:
-            # if fieldName == "shift" and keyStruct["shift"] > 0:
             if fieldName == "shift":
                 self.shift = chr(keyStruct["shift"])
             elif fieldName not in "primary finger id":
@@ -36,10 +35,10 @@ class Key(object):
         else:
             self.position = (-9999, -9999)
 
-    def createIsntanceFromFields(self, primary, finger, id, shift=0):
+    def initFromArgs(self, primary, finger, keyId, shift=0):
         self.primary: primary
         self.finger: finger
-        self.id: id
+        self.id = keyId
         if shift:
             self.shift: shift
 
