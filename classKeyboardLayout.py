@@ -91,3 +91,9 @@ class KeyboardLayout(object):
         else:
             return 1
 
+    def getKeyFromPrimary(self, primary):
+        for key in self.keys:
+            if key.getPrimary() == primary:
+                return key
+
+    def initAbcLayout(self):

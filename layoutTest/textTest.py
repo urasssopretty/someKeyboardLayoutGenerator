@@ -2,8 +2,6 @@ import string
 
 
 def fingerStats(layout, text):
-    # text = open(fileName).read()
-    # text = open(fileName).read().replace(' ', '')
     keys = layout.getKeys()
     keysPrimary = []
     keysUnderEachFinger = layout.getKeysUnderEachFinger()

@@ -1,4 +1,5 @@
 from classKeyboardLayout import *
+from classKeyboardKey import *
 from layoutTest.textTest import *
 
 
@@ -8,11 +9,16 @@ def mathLayoutGenerator(textFileName):
     charStatArr, charStatDict = charStats(text)
     # charStatDictValues = charStatDict.values()
     # charStatDictKeys = charStatDict.keys()
-    fuckingList = []
+    charStat = []
+    keys = []
 
     for index in range(len(abc)):
-        fuckingList.append(abc[index])
-        fuckingList.append(charStatDict[index])
+        charStat.append(abc[index])
+        charStat.append(charStatDict[index])
+        keys.append(Key.initFromArgs(abc[index]))
+
+
+
 
     # for index in range(len(charStatArr)):
     #     fuckingList.append(charStatDictKeys[index])
