@@ -96,4 +96,4 @@ class KeyboardLayout(object):
             if key.getPrimary() == primary:
                 return key
 
-    def initAbcLayout(self):
+    # def initAbcLayout(self):

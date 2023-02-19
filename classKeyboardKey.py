@@ -12,7 +12,7 @@ class Key(object):
         for fieldName in keyStruct:
             if fieldName == "shift":
                 self.shift = chr(keyStruct["shift"])
-            elif fieldName not in "primary finger id":
+            elif fieldName not in "primary id":
                 print("file contains strange json-key in keys array\n",
                       "more info:\n",
                       keyStruct)
@@ -35,12 +35,26 @@ class Key(object):
         else:
             self.position = (-9999, -9999)
 
-    def initFromArgs(self, primary, finger, keyId, shift=0):
-        self.primary: primary
-        self.finger: finger
-        self.id = keyId
-        if shift:
-            self.shift: shift
+    # def initFromArgs(primary, finger, keyId, keyboardType="standard", shift=0):
+    #     keyId += 15
+    #
+    #     if keyboardType == "standard":
+    #         if 14 < keyId < 28:
+    #             position = (keyId - 13, .5)
+    #         elif 28 < keyId < 40:
+    #             position = (keyId - 26.75, 1.5)
+    #         elif 41 < keyId < 51:
+    #             position = (keyId - 39.25, 2.5)
+    #         else:
+    #             position = (-999, -999)
+    #     else:
+    #         position = (-9999, -9999)
+    #
+    #     shift = ""
+    #     if shift:
+    #         shift = shift
+    #
+    #     return Key()
 
     def getPrimary(self):
         return self.primary

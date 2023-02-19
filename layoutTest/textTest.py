@@ -1,6 +1,3 @@
-import string
-
-
 def fingerStats(layout, text):
     keys = layout.getKeys()
     keysPrimary = []
@@ -22,22 +19,23 @@ def fingerStats(layout, text):
     return keyStats
 
 
-def charStats(text):
-    abc = string.ascii_lowercase
-    counterArr = []
-    counterDict = {}
-
-    for letter in abc:
-        counterDict[letter] = 0
-
-    for letter in text:
-        for index in range(len(abc)):
-            counterArr[index] += 1
+def charStats(abc, text):
+    charCounterList = []
+    # counterDict = {}
 
     for index in range(len(abc)):
-        counterDict[abc[index]] = counterArr[index]
+        charCounterList.append(0)
 
-    return counterArr, counterDict
+    # for letter in abc:
+    #     counterDict[letter] = 0
 
-# charStats(open("../testTextes/alice_in_wonderland.txt").read())
-# charStats(open("../layouts/normalQwerty.txt").read())
+    for char in text:
+        for index in range(len(abc)):
+            if abc[index] == char:
+                charCounterList[index] += 1
+
+    # for index in range(len(abc)):
+    #     counterDict[abc[index]] = counterArr[index]
+
+    return charCounterList
+    # return counterArr, counterDict
