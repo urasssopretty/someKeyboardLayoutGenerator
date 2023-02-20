@@ -21,21 +21,22 @@ def fingerStats(layout, text):
 
 def charStats(abc, text):
     charCounterList = []
-    # counterDict = {}
+    charCounterDict = {}
 
     for index in range(len(abc)):
         charCounterList.append(0)
 
-    # for letter in abc:
-    #     counterDict[letter] = 0
+    for letter in abc:
+        charCounterDict[letter] = 0
 
     for char in text:
         for index in range(len(abc)):
             if abc[index] == char:
                 charCounterList[index] += 1
 
-    # for index in range(len(abc)):
-    #     counterDict[abc[index]] = counterArr[index]
+    for index in range(len(abc)):
+        charCounterDict[abc[index]] = charCounterList[index]
 
-    return charCounterList
+    # return charCounterList
+    return charCounterDict
     # return counterArr, counterDict
