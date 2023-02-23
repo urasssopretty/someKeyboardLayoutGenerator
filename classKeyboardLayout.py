@@ -11,59 +11,89 @@
 
 ### FILE STRUCTURE MUST CONTAIN THE FOLLOWING FIELDS: label, fingerStart, keyboardType, keys
 
-
+import json
 from classKeyboardKey import Key
+
+
+def getQwertyKeys():
+    keys = []
+    for key in json.loads(open("layouts/normalQwerty.txt").read())["keys"]:
+        keys.append(Key(key))
+
+    return keys
+
+
+def searchStartKeyFromId(fingerStartIdDict, keys):
+    result = []
+
+    for startId in fingerStartIdDict.values():
+        for key in keys:
+            if key["id"] == startId:
+                result.append(key)
+                break
+
+    return result
+
+
+def getQwertyStartKeys():
+    layoutFile = json.loads(open("layouts/qwerty.txt").read())
+
+    return searchStartKeyFromId(layoutFile["fingerStart"], layoutFile["keys"])
+
+
+def generateKeysFromFile(keys, keyboardType):
+    result = []
+    if keyboardType == "standard":
+        for key in keys:
+            if 14 < key["id"] < 28 \
+                    or 28 < key["id"] < 40 \
+                    or 41 < key["id"] < 52:
+                result.append(Key(key))
+    else:
+        print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
+    return result
+
+
+def validationFields(self, layoutFile):
+    for field in layoutFile:
+        if field in "label author moreInfoUrl moreInfoText fingerStart keyboardType keys":
+            match field:
+                case "keyboardType":
+                    self.keyboardType = layoutFile["keyboardType"]
+                case "keys":
+                    self.keys = generateKeysFromFile(layoutFile["keys"], self.keyboardType)
+                case "fingerStart":
+                    self.fingerStart = searchStartKeyFromId(layoutFile["fingerStart"], layoutFile["keys"])
+                case "author":
+                    self.author = layoutFile["author"]
+                case "moreInfoUrl":
+                    self.moreInfoUrl = layoutFile["moreInfoUrl"]
+                case "moreInfoText":
+                    self.moreInfoText = layoutFile["moreInfoText"]
+            # if field == "keyboardType":
+            #     self.keyboardType = layoutFile["keyboardType"]
+            # elif field == "keys":
+            #     self.keys = generateKeysFromFile(layoutFile["keys"], self.keyboardType)
+            # elif field == "fingerStart":
+            #     self.fingerStart = searchStartKeyFromId(layoutFile["fingerStart"], layoutFile["keys"])
+            # elif field == "author":
+            #     self.author = layoutFile["author"]
+            # elif field == "moreInfoUrl":
+            #     self.moreInfoUrl = layoutFile["moreInfoUrl"]
+            # elif field == "moreInfoText":
+            #     self.moreInfoText = layoutFile["moreInfoText"]
+        else:
+            print("some field in json of layout not valid:\t" + field + "\n")
 
 
 class KeyboardLayout(object):
     def __init__(self, layoutFile):
         self.label = layoutFile["label"]
-        self.keyboardType = layoutFile["keyboardType"]
+        self.keyboardType = "standard"
+        self.keys = getQwertyKeys()
+        self.fingerStart = getQwertyStartKeys()
 
-        self.keys = []
-        if self.keyboardType == "standard":
-            keyList = layoutFile["keys"]
-            for key in keyList:
-                if 14 < key["id"] < 28 \
-                        or 28 < key["id"] < 40 \
-                        or 41 < key["id"] < 51:
-                    self.keys.append(Key(key, "standard", ))
-        else:
-            print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
-
-        self.fingerStart = []
-        fingerStart = layoutFile["fingerStart"]
-
-        for index in range(1, len(fingerStart) + 1):
-            for key in self.keys:
-                if fingerStart[str(index)] == key.getKeyId()\
-                        or fingerStart[str(index)] == 56:
-                    self.fingerStart.append(key)
-                    break
-
-        for jsonKey in layoutFile:
-            if jsonKey == "author":
-                self.author = layoutFile["author"]
-            elif jsonKey == "moreInfoUrl":
-                self.moreInfoUrl = layoutFile["moreInfoUrl"]
-            elif jsonKey == "moreInfoText":
-                self.moreInfoText = layoutFile["moreInfoText"]
-
-    # @classmethod
-    def initFromArgs(self, label, fingerStart, keys, author="", keyboardType="standard", moreInfoUrl="", moreInfoText=""):
-        self.label = label
-        self.fingerStart = fingerStart
-        self.keyboardType = keyboardType
-        self.keys = keys
-        self.fingerStart = fingerStart
-
-        if not author:
-            self.author: "keyboard layout generator by urasssopretty"
-        else:
-            self.author: author
-
-        self.moreInfoUrl = moreInfoUrl
-        self.moreInfoText = moreInfoText
+        validationFields(self, layoutFile)
 
     def getKeys(self):
         return list(self.keys)

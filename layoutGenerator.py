@@ -11,33 +11,39 @@ def getFingerIndex(index):
 
 
 def mathLayoutGenerator(textFileName, keyboardType="standard"):
-    abc = string.ascii_lowercase + " "
+    shiftSpecialChars = {"[": "{", "]": "}", "\\": "|", ";": ":", "'": "\"", ",": "<", ".": ">", "/": "?"}
+    abc = string.ascii_lowercase
+    characters = abc + "[]\;',./"    # + " "
     text = open(textFileName).read()
     # charCounters = charStats(abc, text)
-    charCounters = charStats(abc, text)
+    charCounters = charStats(characters, text)
     keys = []
     key = {}
-    fingerIndex = 0
+
 
     if keyboardType == "standard":
-        for index in range(len(abc)):
-            currentChar = abc[index]
+        for index in range(len(characters)):
+            currentChar = characters[index]
             key["primary"] = currentChar
 
-            if currentChar != " ":
+            if currentChar in shiftSpecialChars.keys():
+                key["shift"] = shiftSpecialChars[currentChar]
+            else:
                 key["shift"] = currentChar.upper()
 
             #   TODO make a system for setFingerIndex
-            key["finger"] = fingerIndex
-            # if fingerIndex == 10:
-            #     fingerIndex = 0
-            # else:
-            #     fingerIndex += 1
+            key["finger"] = 0
+            if index < 12:
+                key["id"] = index + 15
+            elif index < 24:
+                key[id] = index + 18
+            # elif index <
 
-            key["id"] = index + 15
             keys.append(key)
+    else:
+        print("HEY NOW ANOTHER KEYBOARD TYPE DONT WORK | ERROR IN MATHBASED KEYB GENERATOR")
 
     # return KeyboardLayout()
 
 
-mathLayoutGenerator("testTextes/alice_in_wonderland.txt")
+# mathLayoutGenerator("testTextes/alice_in_wonderland.txt")

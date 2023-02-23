@@ -10,11 +10,11 @@ def main():
     layoutFile = json.loads(open(layoutFileName).read())
     layout = KeyboardLayout(layoutFile)
 
-    # rows = layout.getRows()
-    # for row in rows:
-    #     for key in row:
-    #         print(key.getPrimary(), "finger:", key.getFinger(), "keyId:", key.getKeyId())
-    #     print()
+    rows = layout.getRows()
+    for row in rows:
+        for key in row:
+            print(key.getPrimary(), "finger:", key.getFinger(), "keyId:", key.getKeyId())
+        print()
 
     # print(layoutFile)
     # print(type(layoutFile))

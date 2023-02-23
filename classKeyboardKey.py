@@ -8,11 +8,11 @@
 
 
 class Key(object):
-    def __init__(self, keyStruct, keyboardType):
+    def __init__(self, keyStruct, keyboardType="standard"):
         for fieldName in keyStruct:
             if fieldName == "shift":
                 self.shift = chr(keyStruct["shift"])
-            elif fieldName not in "primary id":
+            elif fieldName not in "primary finger id":
                 print("file contains strange json-key in keys array\n",
                       "more info:\n",
                       keyStruct)
@@ -21,8 +21,6 @@ class Key(object):
         self.finger = keyStruct["finger"]
         self.id = keyStruct["id"]
 
-        #   I think about to add filed "size" for keys, but I want to have open "standard" of json keyb layout
-        #   so now if key will be a wide (non 1u size) only if a next key have a some distance from pos of current key
         if keyboardType == "standard":
             if 14 < self.id < 28:
                 self.position = (self.id - 13, .5)   #   -13.5 + .5
@@ -34,27 +32,6 @@ class Key(object):
                 self.position = (-999, -999)
         else:
             self.position = (-9999, -9999)
-
-    # def initFromArgs(primary, finger, keyId, keyboardType="standard", shift=0):
-    #     keyId += 15
-    #
-    #     if keyboardType == "standard":
-    #         if 14 < keyId < 28:
-    #             position = (keyId - 13, .5)
-    #         elif 28 < keyId < 40:
-    #             position = (keyId - 26.75, 1.5)
-    #         elif 41 < keyId < 51:
-    #             position = (keyId - 39.25, 2.5)
-    #         else:
-    #             position = (-999, -999)
-    #     else:
-    #         position = (-9999, -9999)
-    #
-    #     shift = ""
-    #     if shift:
-    #         shift = shift
-    #
-    #     return Key()
 
     def getPrimary(self):
         return self.primary
