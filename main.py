@@ -7,7 +7,6 @@ from layoutGenerator import *
 
 
 def main():
-    # textFileName = "testTexts/alice_in_wonderland.txt"
     layoutFileName = "layouts/normalQwerty.txt"
     layoutFile = json.loads(open(layoutFileName).read())
     layout = KeyboardLayout(layoutFile)
@@ -15,14 +14,18 @@ def main():
     # for key in layout.getKeys():
     #     print(key.getPrimaryChar(), key.getPosition(), key.getKeyId())
 
-    # print(charStats(string.ascii_lowercase, open("testTexts/alice_in_wonderland.txt").read()))
+    # someTextFileName = "testTexts/alice_in_wonderland.txt"
+    # someFile = open(someTextFileName).read()
+    # print(charStats(string.ascii_lowercase, someFile))
+    #
+    # print("finger stats:", end=" ")
+    # for element in fingerStats(layout, someFile):
+    #     print(element, end=" ")
 
     textFileName = "testTexts/somenews.txt"
     print("classic distance test:", '%.3f' % classicDistanceTest(layout, textFileName))
     print("distance test:", '%.3f' % oldSomeDistanceTest(layout, textFileName))
-    # print("distance test:", '%.3f' % someDistanceTest(layout, textFileName))
-    # print("finger stats:", end=" ")
-    # for element in fingerStats(layout, textFileName): print(element, end=" ")
+    print("new distance test:", '%.3f' % someDistanceTest(layout, textFileName))
 
 
 if __name__ == '__main__':
