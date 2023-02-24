@@ -20,7 +20,7 @@ def main():
     textFileName = "testTexts/somenews.txt"
     print("classic distance test:", '%.3f' % classicDistanceTest(layout, textFileName))
     print("distance test:", '%.3f' % oldSomeDistanceTest(layout, textFileName))
-    print("distance test:", '%.3f' % someDistanceTest(layout, textFileName))
+    # print("distance test:", '%.3f' % someDistanceTest(layout, textFileName))
     # print("finger stats:", end=" ")
     # for element in fingerStats(layout, textFileName): print(element, end=" ")
 
