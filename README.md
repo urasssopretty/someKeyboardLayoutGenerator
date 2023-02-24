@@ -6,8 +6,8 @@
 - [X] create basics for work with layout, key
 - [X] parse layouts from json configs from (patorjk.com/keyboard-layout-analyzer) and (stevep99.github.io/keyboard-layout-analyzer)
 - [X] add some tests for keyboard layouts  
-- [x] add some stats for text 
-- [ ] refactoring and add some basics features
+- [X] add some basic features and refactoring
+- [X] refactoring and add some basics features
 - [ ] add math based keyb generator  
 - [ ] add questionnaire for generator (change or dont change ZXCV, should consonants and vowels be on opposite sides, etc)  
 - [ ] add export of layout  

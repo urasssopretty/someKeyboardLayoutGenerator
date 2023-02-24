@@ -8,42 +8,35 @@
 
 
 class Key(object):
-    def __init__(self, keyStruct, keyboardType):
-        for fieldName in keyStruct:
-            # if fieldName == "shift" and keyStruct["shift"] > 0:
-            if fieldName == "shift":
-                self.shift = chr(keyStruct["shift"])
-            elif fieldName not in "primary finger id":
-                print("file contains strange json-key in keys array\n",
-                      "more info:\n",
-                      keyStruct)
+    def __init__(self, keyStruct, keyboardType="standard"):
+        for field in keyStruct:
+            if field in "primary shift finger id":
+                match field:
+                    case "primary":
+                        self.primary = chr(keyStruct["primary"])
+                    case "shift":
+                        self.shift = chr(keyStruct["shift"])
+                    case "finger":
+                        self.finger = keyStruct["finger"]
+                    case "id":
+                        self.id = keyStruct["id"]
+            else:
+                print("layout file contains strange json-key in list of keys:\t", field, end="\n\n")
 
-        self.primary = chr(keyStruct["primary"])
-        self.finger = keyStruct["finger"]
-        self.id = keyStruct["id"]
-
-        #   I think about to add filed "size" for keys, but I want to have open "standard" of json keyb layout
-        #   so now if key will be a wide (non 1u size) only if a next key have a some distance from pos of current key
+        #   TODO rewrite this shit because id can be any
         if keyboardType == "standard":
             if 14 < self.id < 28:
                 self.position = (self.id - 13, .5)   #   -13.5 + .5
             elif 28 < self.id < 40:
                 self.position = (self.id - 26.75, 1.5)   # -13.5 - 13 + .75
-            elif 41 < self.id < 51:
+            elif 41 < self.id < 52:
                 self.position = (self.id - 39.25, 2.5)   #  ....
             else:
                 self.position = (-999, -999)
         else:
-            self.position = (-9999, -9999)
+            print("current version of layout generator dont work with non-standard keyb type | error in layout class in __init__ method", "\n\n\tkeyb type is:\t", keyboardType)
 
-    def createIsntanceFromFields(self, primary, finger, id, shift=0):
-        self.primary: primary
-        self.finger: finger
-        self.id: id
-        if shift:
-            self.shift: shift
-
-    def getPrimary(self):
+    def getPrimaryChar(self):
         return self.primary
 
     def getFinger(self):
@@ -55,12 +48,13 @@ class Key(object):
     def getPosition(self):
         return self.position
 
-    def getShift(self):
-        return hasattr(self, "shift") if self.shift else 0
+    def getShiftChar(self):
+        return self.shift
+        # return hasattr(self, "shift") if self.shift else 0
 
-    def getNullKey(self, fingerId=1):
-        self.primary = None
-        self.shift = None
-        self.id = None
-        self.finger = fingerId
-        return self
+    # def getNullKey(self, fingerId=0):
+    #     self.primary = None
+    #     self.shift = None
+    #     self.id = None
+    #     self.finger = fingerId
+    #     return self
