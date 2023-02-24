@@ -5,7 +5,7 @@ def fingerStats(layout, text):
     keyStats = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     for key in keys:
-        keysPrimary.append(key.getPrimary())
+        keysPrimary.append(key.getPrimaryChar())
 
     for letter in text:
         for finger in range(10):
@@ -13,7 +13,7 @@ def fingerStats(layout, text):
                 continue
 
             for key in keysUnderEachFinger[finger]:
-                if key.getPrimary() == letter:
+                if key.getPrimaryChar() == letter:
                     keyStats[finger] += 1
 
     return keyStats

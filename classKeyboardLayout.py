@@ -29,7 +29,7 @@ def searchStartKeyFromId(fingerStartIdDict, keys):
     for startId in fingerStartIdDict.values():
         for key in keys:
             if key["id"] == startId:
-                result.append(key)
+                result.append(Key(key))
                 break
 
     return result
@@ -42,15 +42,24 @@ def getQwertyStartKeys():
 
 
 def generateKeysFromFile(keys, keyboardType):
+    usedId = []
     result = []
+
     if keyboardType == "standard":
         for key in keys:
+            if key["id"] in usedId:
+                print("ITS FUCKING ERROR!!!! RED ALARM!!!! | error u have non-individaul id for keys", key)
+                continue
+            else:
+                usedId.append(key["id"])
+
             if 14 < key["id"] < 28 \
                     or 28 < key["id"] < 40 \
                     or 41 < key["id"] < 52:
                 result.append(Key(key))
     else:
         print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
+
     return result
 
 
@@ -70,18 +79,6 @@ def validationFields(self, layoutFile):
                     self.moreInfoUrl = layoutFile["moreInfoUrl"]
                 case "moreInfoText":
                     self.moreInfoText = layoutFile["moreInfoText"]
-            # if field == "keyboardType":
-            #     self.keyboardType = layoutFile["keyboardType"]
-            # elif field == "keys":
-            #     self.keys = generateKeysFromFile(layoutFile["keys"], self.keyboardType)
-            # elif field == "fingerStart":
-            #     self.fingerStart = searchStartKeyFromId(layoutFile["fingerStart"], layoutFile["keys"])
-            # elif field == "author":
-            #     self.author = layoutFile["author"]
-            # elif field == "moreInfoUrl":
-            #     self.moreInfoUrl = layoutFile["moreInfoUrl"]
-            # elif field == "moreInfoText":
-            #     self.moreInfoText = layoutFile["moreInfoText"]
         else:
             print("some field in json of layout not valid:\t" + field + "\n")
 
@@ -95,35 +92,40 @@ class KeyboardLayout(object):
 
         validationFields(self, layoutFile)
 
+    def getLabel(self):
+        return self.label
+
+    def getKeyboardType(self):
+        return self.keyboardType
+
     def getKeys(self):
-        return list(self.keys)
+        return self.keys
 
     def getFingerStart(self):
-        return list(self.fingerStart)
+        return self.fingerStart
 
-    def getKeysUnderEachFinger(self):
-        keysUnderEachFinger = [[], [], [], [], [], [], [], [], [], []]
+    def getKeysUnderFingers(self):
+        keysUnderFingers = [[] for _ in range(10)]
 
         for key in self.keys:
-            for keyIndex in range(10):
-                if key.getFinger() == (keyIndex + 1):
-                    keysUnderEachFinger[keyIndex].append(key)
+            for fingerIndex in range(10):
+                if key.getFinger() == (fingerIndex + 1):
+                    keysUnderFingers[fingerIndex].append(key)
 
-        return keysUnderEachFinger
+        return keysUnderFingers
 
     def getRows(self):
         if self.keyboardType == "standard":
             return  [
-                        self.keys[:12],
+                        self.keys[:13],
                         self.keys[13:24],
                         self.keys[24:34]
                     ]
         else:
-            return 1
+            print("now we dont support another keyb type | error in getRows method in layout class")
 
-    def getKeyFromPrimary(self, primary):
-        for key in self.keys:
-            if key.getPrimary() == primary:
-                return key
+    # def getKeyFromPrimary(self, primary):
+    #     for key in self.keys:
+    #         if key.getPrimary() == primary:
+    #             return key
 
-    # def initAbcLayout(self):

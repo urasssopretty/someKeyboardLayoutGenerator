@@ -46,4 +46,4 @@ def mathLayoutGenerator(textFileName, keyboardType="standard"):
     # return KeyboardLayout()
 
 
-# mathLayoutGenerator("testTextes/alice_in_wonderland.txt")
+# mathLayoutGenerator("testTexts/alice_in_wonderland.txt")
