@@ -5,6 +5,15 @@ import string
 
 
 def getKeyPostion(charCounters, char, keyboardType):
+
+
+    return 0
+
+
+def getKeyId():
+    return 0
+
+
 def getFingerIndex(index):
     if index < 5:
         return index
