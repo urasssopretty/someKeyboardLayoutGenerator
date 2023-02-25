@@ -16,7 +16,7 @@ def classicDistanceTest(keyboardLayout, fileName):
             for key in keysUnderEachFinger[fingerIndex]:
                 if key.getPrimaryChar() == letter:
                     if key != startPoses[fingerIndex]:
-                        distance += math.dist(startPoses[fingerIndex].getPosition(), key.getPosition())
+                        distance += math.dist(startPoses[fingerIndex].getKeyPostion(), key.getKeyPostion())
     return distance
 
 
@@ -34,13 +34,15 @@ def oldSomeDistanceTest(keyboardLayout, fileName):
 
             for key in keysUnderFingers[fingerIndex]:
                 if key.getPrimaryChar() == letter and key != lastKey[fingerIndex]:
-                    distance += math.dist(lastKey[fingerIndex].getPosition(), key.getPosition())
+                    distance += math.dist(lastKey[fingerIndex].getKeyPostion(), key.getKeyPostion())
                     lastKey[fingerIndex] = key
                     break
 
     return distance
 
 
+### TODO: try to understand why there another distance if i dont rewrite it \
+### TODO: rewrite it: fingers should come back to fingerStart positions after 2-3 ticks
 def someDistanceTest(keyboardLayout, fileName):
     text = open(fileName).read().lower().replace(' ', '')
     startPoses = keyboardLayout.getFingerStart()
@@ -61,7 +63,7 @@ def someDistanceTest(keyboardLayout, fileName):
             for key in keysUnderFingers[fingerIndex]:
                 counterOfSteps[fingerIndex] += 1
                 if key.getPrimaryChar() == letter and key != lastKey[fingerIndex]:
-                    distance += math.dist(lastKey[fingerIndex].getPosition(), key.getPosition())
+                    distance += math.dist(lastKey[fingerIndex].getKeyPostion(), key.getKeyPostion())
                     lastKey[fingerIndex] = key
                     break
 
