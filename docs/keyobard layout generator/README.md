@@ -5,17 +5,17 @@
 ### TO-DO:  
 - [X] create basics for work with layout, key
 - [X] parse layouts from json configs from (patorjk.com/keyboard-layout-analyzer) and (stevep99.github.io/keyboard-layout-analyzer)
-- [X] add some tests for keyboard layouts  
-- [x] add some stats for text 
-- [ ] refactoring and add some basics features
-- [ ] add math based keyb generator  
+- [X] create some classes and tests for keyboard layout  
+- [X] create some analyzers for text 
+- [X] refactoring
+- [X] add math based keyboard generator  
 - [ ] add questionnaire for generator (change or dont change ZXCV, should consonants and vowels be on opposite sides, etc)  
 - [ ] add export of layout  
 - [ ] Release 0.5  
 - [ ] add generator based on genetic algorithms  
 - [ ] add pic generator of finished layout  
 - [ ] add cool tui  
-- [ ] Realease 1.0
+- [ ] Release 1.0
 
 ### Q&A:
 #####  how it can help?

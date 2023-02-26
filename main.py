@@ -5,8 +5,11 @@ def main():
     layoutFile = json.loads(open(layoutFileName).read())
     layout = KeyboardLayout(layoutFile)
 
-    # for key in layout.getKeys():
-    #     print(key.getPrimaryChar(), key.getPosition(), key.getKeyId())
+    # for row in layout.getRows():
+    #     for key in row:
+    #         if key.position not in listOfPositions:
+    #             print(key.getPrimaryChar(), key.getPosition())
+    #     print()
 
     someTextFileName = "testTexts/alice_in_wonderland.txt"
     # someFile = open(someTextFileName).read()
