@@ -1,5 +1,6 @@
+from operator import itemgetter
 from classKeyboardLayout import *
-from classKeyboardKey import *
+# from classKeyboardKey import *
 from layoutTest.textTest import *
 import string
 
@@ -45,21 +46,14 @@ def getOrderedPositions(index):
     return listOfPositions[index]
 
 
-def getKeyPosition(charCounters, character, keyboardType):
-    if keyboardType != "standard":
-        raise Exception("now layout generator dont work with non standard layouts!!!!",
-                        "| error: math based generator in getKeyPosition")
-
+def getKeyPosition(charCounters, character):
     for pairIndex in range(len(charCounters)):
         if charCounters[pairIndex][0] == character:
             return getOrderedPositions(pairIndex)
 
 
 ### TODO REWRITE IT beacuse key id must be in order from first to last but not like this
-def getKeyId(charCounters, char, keyboardType):
-    if keyboardType != "standard":
-        raise Exception("non-standard types of keyb is unsupported now | error: math based generator in getKeyId")
-
+def getKeyId(charCounters, char):
     for pairIndex in range(len(charCounters)):
         if charCounters[pairIndex][0] == char:
             return pairIndex
@@ -68,26 +62,35 @@ def getKeyId(charCounters, char, keyboardType):
 
 
 def getFingerIndex(position, keys):
-    print(position)
-    # if index < 5:
-    #     return index
-    # elif index == 5 or index == 6:
-    #     return index
+    xvalue = position[0]
+
+    if 1 < xvalue < 6:
+        return int(xvalue - 2)
+    elif int(xvalue) == 6:
+        return 3
+    elif int(xvalue) == 7:
+        return 6
+    elif 7 < xvalue < 12:
+        return int(xvalue - 2)
+    elif 11 < xvalue < 15:
+        return  9
+    else:
+        return -1
 
 
 def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
     text = open(textFileName).read().lower().replace(" ", "")
 
     shiftSpecialChars = {
-                            "[": "{",
-                            "]": "}",
-                            "\\": "|",
-                            ";": ":",
-                            "'": "\"",
-                            ",": "<",
-                            ".": ">",
-                            "/": "?"
-                        }
+        "[": "{",
+        "]": "}",
+        "\\": "|",
+        ";": ":",
+        "'": "\"",
+        ",": "<",
+        ".": ">",
+        "/": "?"
+    }
 
     characters = abc + ''.join(str(element) for element in list(shiftSpecialChars.keys()))
     # charCounters = charStats(characters, text)
@@ -99,21 +102,32 @@ def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
     keys = []
 
     for char in characters:
+        keyPosition = getKeyPosition(charCounters, char)
         keys.append(
             {
                 "primary": char,
                 "shift": shiftSpecialChars[char] if (char in shiftSpecialChars.keys()) else char.upper(),
-                "position": getKeyPosition(charCounters, char, keyboardType),
-                "id": getKeyId(charCounters, char, keyboardType),
-                # FUCK HO TO DO THIS>?????
-                "finger": getFingerIndex(["position"], keys)
+                "position": keyPosition,
+                "id": getKeyId(charCounters, char),
+                "finger": getFingerIndex(keyPosition, keys)
             }
         )
 
+    # rows = [[] for _ in range(3)]
+    #
     # for key in keys:
-    #     print(key)
+    #     match key["position"][1]:
+    #         case 0.5:
+    #             rows[0].append(key)
+    #         case 1.5:
+    #             rows[1].append(key)
+    #         case 2.5:
+    #             rows[2].append(key)
+    #
+    # for row in rows:
+    #     for key in sorted(row, key=lambda d: d["position"][0]):
+    #         print(key["primary"], key["finger"], key["position"])
+    #     print()
 
     # return KeyboardLayout()
 
-
-# mathLayoutGenerator("testTexts/alice_in_wonderland.txt")

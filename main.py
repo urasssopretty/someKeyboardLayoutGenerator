@@ -1,5 +1,6 @@
 from generators.layoutGenerator import *
 
+
 def main():
     layoutFileName = "layouts/normalQwerty.txt"
     layoutFile = json.loads(open(layoutFileName).read())
@@ -7,8 +8,7 @@ def main():
 
     # for row in layout.getRows():
     #     for key in row:
-    #         if key.position not in listOfPositions:
-    #             print(key.getPrimaryChar(), key.getPosition())
+    #         print(key.getPrimaryChar(), key.getPosition(), key.getFinger())
     #     print()
 
     someTextFileName = "testTexts/alice_in_wonderland.txt"
