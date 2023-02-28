@@ -36,6 +36,7 @@ def getQwertyStartKeys():
     return searchStartKeyFromId(layoutFile["fingerStart"], layoutFile["keys"])
 
 
+#   TODO RENAME THIS
 def generateKeysFromFile(keys, keyboardType):
     usedId = []
     result = []
@@ -46,11 +47,10 @@ def generateKeysFromFile(keys, keyboardType):
     for key in keys:
         if key["id"] in usedId:
             raise Exception("ITS FUCKING ERROR!!!! RED ALARM!!!! | error u have non individual id for keys", key)
+        elif key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52))):
+            result.append(Key(key))
 
         usedId.append(key["id"])
-
-        if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52))):
-            result.append(Key(key))
 
     return result
 
