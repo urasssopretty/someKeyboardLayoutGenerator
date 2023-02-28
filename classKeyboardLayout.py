@@ -16,26 +16,18 @@ from classKeyboardKey import Key
 
 
 def getQwertyKeys():
-    return [Key(key) for key in json.load(open("layouts/normalQwerty.txt"))["keys"] if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52)))]
-    # return [Key(key) for key in json.load(open("layouts/normalQwerty.txt"))["keys"] if 15 <= key["id"] <= 27 or 29 <= key["id"] <= 39 or 42 <= key["id"] <= 51]
+    # return [Key(key) for key in json.load(open("layouts/normalQwerty.txt"))["keys"] if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52)))]
 
-    # keys = []
-    # for key in json.loads(open("layouts/normalQwerty.txt").read())["keys"]:
-    #     keys.append(Key(key))
-    #
-    # return keys
+    keys = []
+    for key in json.loads(open("layouts/normalQwerty.txt").read())["keys"]:
+        if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52))):
+            keys.append(Key(key))
+
+    return keys
 
 
 def searchStartKeyFromId(fingerStartIdDict, keys):
-    result = []
-
-    for startId in fingerStartIdDict.values():
-        for key in keys:
-            if key["id"] == startId:
-                result.append(Key(key))
-                break
-
-    return result
+    return [Key(key) for key in keys if key["id"] in fingerStartIdDict.values()]
 
 
 def getQwertyStartKeys():
@@ -48,20 +40,17 @@ def generateKeysFromFile(keys, keyboardType):
     usedId = []
     result = []
 
-    if keyboardType == "standard":
-        for key in keys:
-            if key["id"] in usedId:
-                print("ITS FUCKING ERROR!!!! RED ALARM!!!! | error u have non-individaul id for keys", key)
-                continue
-            else:
-                usedId.append(key["id"])
+    if keyboardType != "standard":
+        raise Exception("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
 
-            if 14 < key["id"] < 28 \
-                    or 28 < key["id"] < 40 \
-                    or 41 < key["id"] < 52:
-                result.append(Key(key))
-    else:
-        print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
+    for key in keys:
+        if key["id"] in usedId:
+            raise Exception("ITS FUCKING ERROR!!!! RED ALARM!!!! | error u have non individual id for keys", key)
+
+        usedId.append(key["id"])
+
+        if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52))):
+            result.append(Key(key))
 
     return result
 
@@ -74,6 +63,7 @@ def validationFields(self, layout):
                     self.keyboardType = layout["keyboardType"]
                 case "keys":
                     self.keys = generateKeysFromFile(layout["keys"], self.keyboardType)
+                    # print(self.keys)
                 case "fingerStart":
                     self.fingerStart = searchStartKeyFromId(layout["fingerStart"], layout["keys"])
                 case "author":
@@ -93,8 +83,8 @@ class KeyboardLayout(object):
         self.keys = getQwertyKeys()
         self.fingerStart = getQwertyStartKeys()
 
-        for key in getQwertyKeys():
-            print(key.getPrimaryChar(), key.getKeyId())
+        # for key in getQwertyKeys():
+        #     print(key.getPrimaryChar(), key.getKeyId())
 
         validationFields(self, layoutDict)
 
@@ -129,9 +119,4 @@ class KeyboardLayout(object):
                     ]
         else:
             print("now we dont support another keyb type | error in getRows method in layout class")
-
-    # def getKeyFromPrimary(self, primary):
-    #     for key in self.keys:
-    #         if key.getPrimary() == primary:
-    #             return key
 

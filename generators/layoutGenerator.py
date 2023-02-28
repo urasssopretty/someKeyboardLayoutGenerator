@@ -52,7 +52,7 @@ def getKeyPosition(charCounters, character):
             return getOrderedPositions(pairIndex)
 
 
-### TODO REWRITE IT beacuse key id must be in order from first to last but not like this
+### TODO REWRITE IT because key id must be in order from first to last but not like this
 def getKeyId(charCounters, char):
     for pairIndex in range(len(charCounters)):
         if charCounters[pairIndex][0] == char:
@@ -64,18 +64,30 @@ def getKeyId(charCounters, char):
 def getFingerIndex(position, keys):
     xvalue = position[0]
 
-    if 1 < xvalue < 6:
+    if xvalue in range(1, 7):
         return int(xvalue - 2)
     elif int(xvalue) == 6:
         return 3
     elif int(xvalue) == 7:
         return 6
-    elif 7 < xvalue < 12:
+    elif xvalue in range(7, 13):
         return int(xvalue - 2)
-    elif 11 < xvalue < 15:
-        return  9
+    elif xvalue in range(11, 16):
+        return 9
     else:
         return -1
+# if 1 < xvalue < 6:
+#         return int(xvalue - 2)
+#     elif int(xvalue) == 6:
+#         return 3
+#     elif int(xvalue) == 7:
+#         return 6
+#     elif 7 < xvalue < 12:
+#         return int(xvalue - 2)
+#     elif 11 < xvalue < 15:
+#         return  9
+#     else:
+#         return -1
 
 
 def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):

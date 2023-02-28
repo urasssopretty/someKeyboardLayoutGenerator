@@ -6,35 +6,43 @@
 
 ### KEY STRUCTURE IN JSON FILE MUST CONTAIN THE FOLLOWING FIELDS: primary, finger, id
 
+def validateFields(keyStruct):
+    # for field in keyStruct:
+    #     if field not in "primary shift finger id":
+    #         raise Exception("layout file contains strange json-key in list of keys:\t", field)
+    # print(keyStruct.keys())
+    somelist = "primary shift finger id".split(" ")
+
+    if somelist not in keyStruct.keys:
+        raise Exception("layout file contains strange json-key in list of keys:\t", keyStruct.keys)
+
 
 class Key(object):
     def __init__(self, keyStruct, keyboardType="standard"):
-        for field in keyStruct:
-            if field in "primary shift finger id":
-                match field:
-                    case "primary":
-                        self.primary = chr(keyStruct["primary"])
-                    case "shift":
-                        self.shift = chr(keyStruct["shift"])
-                    case "finger":
-                        self.finger = keyStruct["finger"]
-                    case "id":
-                        self.id = keyStruct["id"]
-            else:
-                print("layout file contains strange json-key in list of keys:\t", field, end="\n\n")
+        if keyboardType != "standard":
+            raise Exception("non standard keyb type!!! | now its dont work")
 
-        #   TODO rewrite this shit because id can be any
-        if keyboardType == "standard":
-            if 14 < self.id < 28:
-                self.position = (self.id - 13, .5)   #   -13.5 + .5
-            elif 28 < self.id < 40:
-                self.position = (self.id - 26.75, 1.5)   # -13.5 - 13 + .75
-            elif 41 < self.id < 52:
-                self.position = (self.id - 39.25, 2.5)   #  ....
-            else:
-                self.position = (-999, -999)
-        else:
-            print("current version of layout generator dont work with non-standard keyb type | error in layout class in __init__ method", "\n\n\tkeyb type is:\t", keyboardType)
+        validateFields(keyStruct)
+
+        for field in keyStruct:
+            match field:
+                case "primary":
+                    self.primary = chr(keyStruct[field])
+                case "shift":
+                    self.shift = chr(keyStruct[field])
+                case "finger":
+                    self.finger = keyStruct[field]
+                case "id":
+                    self.id = keyStruct[field]
+
+        self.position = (-999, -999)
+
+        deltaX = [13, 26.75, 39.25]
+        idRanges = [list(range(15, 28)), list(range(29, 40)), list(range(42, 52))]
+
+        for index in range(len(idRanges)):
+            if self.id in idRanges[index]:
+                self.position = (self.id - deltaX[index], index - 0.5)
 
     def getPrimaryChar(self):
         return self.primary
