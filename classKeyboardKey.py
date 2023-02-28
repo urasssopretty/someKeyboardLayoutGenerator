@@ -6,15 +6,22 @@
 
 ### KEY STRUCTURE IN JSON FILE MUST CONTAIN THE FOLLOWING FIELDS: primary, finger, id
 
-def validateKeyboardType(type):
-    if type != "standard":
+def validateKeyboardType(keybtype):
+    if keybtype != "standard":
         raise Exception("non standard keyboard type!!! | now its dont work")
 
 
 def validateFields(keyStruct):
+    presenceCounter = 0
+
     for field in keyStruct:
         if field not in "primary shift finger id":
-            raise Exception("layout file contains strange json-key in list of keys:\t", field)
+            print("layout file contains strange json-key in list of keys:\t", field)
+        elif field in "primary finger id":
+            presenceCounter += 1
+
+    if presenceCounter != 3:
+        raise Exception("key must contains next fields:\t", "primary, finger, id", keyStruct)
 
 
 class Key(object):
@@ -53,8 +60,4 @@ class Key(object):
 
     def getPosition(self):
         return self.position
-
-    # def getShiftChar(self):
-    #     return self.shift
-
 

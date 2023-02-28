@@ -17,7 +17,6 @@ from classKeyboardKey import Key
 
 def getQwertyKeys():
     # return [Key(key) for key in json.load(open("layouts/normalQwerty.txt"))["keys"] if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52)))]
-
     keys = []
     for key in json.loads(open("layouts/normalQwerty.txt").read())["keys"]:
         if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52))):
@@ -38,53 +37,69 @@ def getQwertyStartKeys():
 
 #   TODO RENAME THIS
 def generateKeysFromFile(keys, keyboardType):
-    usedId = []
-    result = []
-
     if keyboardType != "standard":
         raise Exception("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
 
+    usedId = []
+    result = []
+
     for key in keys:
         if key["id"] in usedId:
-            raise Exception("ITS FUCKING ERROR!!!! RED ALARM!!!! | error u have non individual id for keys", key)
-        elif key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52))):
-            result.append(Key(key))
+            raise Exception("ERROR!!!! RED ALARM!!!! | error u have non individual id for keys", key)
 
         usedId.append(key["id"])
 
+        if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52))):
+            result.append(Key(key))
+
     return result
+
+            # match field:
+            #     case "label":
+            #         self.label = layout["label"]
+            #     case "keyboardType":
+            #         self.keyboardType = layout["keyboardType"]
+            #     case "keys":
+            #         self.keys = generateKeysFromFile(layout["keys"], self.keyboardType)
+            #     case "fingerStart":
+            #         self.fingerStart = searchStartKeyFromId(layout["fingerStart"], layout["keys"])
+            #     case "author":
+            #         self.author = layout["author"]
+            #     case "moreInfoUrl":
+            #         self.moreInfoUrl = layout["moreInfoUrl"]
+            #     case "moreInfoText":
+            #         self.moreInfoText = layout["moreInfoText"]
 
 
 def validationFields(self, layout):
+    presenceCounter = 0
+
     for field in layout:
-        if field in "label author moreInfoUrl moreInfoText fingerStart keyboardType keys":
-            match field:
-                case "keyboardType":
-                    self.keyboardType = layout["keyboardType"]
-                case "keys":
-                    self.keys = generateKeysFromFile(layout["keys"], self.keyboardType)
-                    # print(self.keys)
-                case "fingerStart":
-                    self.fingerStart = searchStartKeyFromId(layout["fingerStart"], layout["keys"])
-                case "author":
-                    self.author = layout["author"]
-                case "moreInfoUrl":
-                    self.moreInfoUrl = layout["moreInfoUrl"]
-                case "moreInfoText":
-                    self.moreInfoText = layout["moreInfoText"]
-        else:
-            print("some field in json of layout not valid:\t" + field + "\n")
+        if field not in "label author moreInfoUrl moreInfoText fingerStart keyboardType keys":
+            print("some field in json of layout not valid:\t", field)
+        e
+
+        match field:
+            case "label":
+                flags[0] += 1
+            case "fingerStart":
+                flags[1] += 1
+            case "keyboardType":
+                flags[2] += 1
+            case "keys":
+                flags[3] += 1
+
+    for flag in flags:
+        if flag != 1:
+            raise Exception("u dont have some field in layout", layout.keys())
 
 
 class KeyboardLayout(object):
     def __init__(self, layoutDict):
-        self.label = layoutDict["label"]
+        self.label = "u dont have name omg"
         self.keyboardType = "standard"
         self.keys = getQwertyKeys()
         self.fingerStart = getQwertyStartKeys()
-
-        # for key in getQwertyKeys():
-        #     print(key.getPrimaryChar(), key.getKeyId())
 
         validationFields(self, layoutDict)
 
