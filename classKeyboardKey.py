@@ -13,14 +13,15 @@ def validateKeyboardType(keybtype):
 
 def validateFields(keyStruct):
     presenceCounter = 0
+    requiredFields = "primary finger id".split(" ")
 
     for field in keyStruct:
         if field not in "primary shift finger id":
             print("layout file contains strange json-key in list of keys:\t", field)
-        elif field in "primary finger id":
+        elif field in requiredFields:
             presenceCounter += 1
 
-    if presenceCounter != 3:
+    if presenceCounter != len(requiredFields):
         raise Exception("key must contains next fields:\t", "primary, finger, id", keyStruct)
 
 

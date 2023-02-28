@@ -54,44 +54,38 @@ def generateKeysFromFile(keys, keyboardType):
 
     return result
 
-            # match field:
-            #     case "label":
-            #         self.label = layout["label"]
-            #     case "keyboardType":
-            #         self.keyboardType = layout["keyboardType"]
-            #     case "keys":
-            #         self.keys = generateKeysFromFile(layout["keys"], self.keyboardType)
-            #     case "fingerStart":
-            #         self.fingerStart = searchStartKeyFromId(layout["fingerStart"], layout["keys"])
-            #     case "author":
-            #         self.author = layout["author"]
-            #     case "moreInfoUrl":
-            #         self.moreInfoUrl = layout["moreInfoUrl"]
-            #     case "moreInfoText":
-            #         self.moreInfoText = layout["moreInfoText"]
+
+def setFields(self, layout):
+    for field in layout:
+        match field:
+            case "label":
+                self.label = layout["label"]
+            case "keyboardType":
+                self.keyboardType = layout["keyboardType"]
+            case "keys":
+                self.keys = generateKeysFromFile(layout["keys"], self.keyboardType)
+            case "fingerStart":
+                self.fingerStart = searchStartKeyFromId(layout["fingerStart"], layout["keys"])
+            case "author":
+                self.author = layout["author"]
+            case "moreInfoUrl":
+                self.moreInfoUrl = layout["moreInfoUrl"]
+            case "moreInfoText":
+                self.moreInfoText = layout["moreInfoText"]
 
 
-def validationFields(self, layout):
+def validationFields(layout):
     presenceCounter = 0
+    requiredFields = "label fingerStart keyboardType keys".split(" ")
 
     for field in layout:
         if field not in "label author moreInfoUrl moreInfoText fingerStart keyboardType keys":
             print("some field in json of layout not valid:\t", field)
-        e
+        elif field in requiredFields:
+            presenceCounter += 1
 
-        match field:
-            case "label":
-                flags[0] += 1
-            case "fingerStart":
-                flags[1] += 1
-            case "keyboardType":
-                flags[2] += 1
-            case "keys":
-                flags[3] += 1
-
-    for flag in flags:
-        if flag != 1:
-            raise Exception("u dont have some field in layout", layout.keys())
+    if presenceCounter != len(requiredFields):
+        raise Exception("u dont have some field in layout", layout.keys())
 
 
 class KeyboardLayout(object):
@@ -101,7 +95,8 @@ class KeyboardLayout(object):
         self.keys = getQwertyKeys()
         self.fingerStart = getQwertyStartKeys()
 
-        validationFields(self, layoutDict)
+        validationFields(layoutDict)
+        setFields(self, layoutDict)
 
     def getLabel(self):
         return self.label
