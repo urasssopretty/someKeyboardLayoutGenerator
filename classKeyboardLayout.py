@@ -35,7 +35,6 @@ def getQwertyStartKeys():
     return searchStartKeyFromId(layoutFile["fingerStart"], layoutFile["keys"])
 
 
-#   TODO RENAME THIS
 def generateKeysFromDict(keys, keyboardType):
     if keyboardType != "standard":
         raise Exception("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")

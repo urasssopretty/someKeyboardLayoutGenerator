@@ -1,3 +1,5 @@
+import json
+from classKeyboardLayout import *
 from generators.layoutGenerator import *
 
 
@@ -8,10 +10,10 @@ def main():
 
     # print(layout.getLabel())
 
-    # for row in layout.getRows():
-    #     for key in row:
-    #         print(key.getPrimaryChar())
-    #     print()
+    for row in layout.getRows():
+        for key in row:
+            print(key.getPrimaryChar(), key.getPosition())
+        print()
 
     someTextFileName = "testTexts/alice_in_wonderland.txt"
     # someFile = open(someTextFileName).read()

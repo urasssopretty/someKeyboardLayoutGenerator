@@ -48,7 +48,7 @@ class Key(object):
 
         for index in range(len(idRanges)):
             if self.id in idRanges[index]:
-                self.position = (self.id - deltaX[index], index - 0.5)
+                self.position = (self.id - deltaX[index], index + 0.5)
 
     def getPrimaryChar(self):
         return self.primary
