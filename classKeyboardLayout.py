@@ -36,7 +36,7 @@ def getQwertyStartKeys():
 
 
 #   TODO RENAME THIS
-def generateKeysFromFile(keys, keyboardType):
+def generateKeysFromDict(keys, keyboardType):
     if keyboardType != "standard":
         raise Exception("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
 
@@ -55,25 +55,6 @@ def generateKeysFromFile(keys, keyboardType):
     return result
 
 
-def setFields(self, layout):
-    for field in layout:
-        match field:
-            case "label":
-                self.label = layout["label"]
-            case "keyboardType":
-                self.keyboardType = layout["keyboardType"]
-            case "keys":
-                self.keys = generateKeysFromFile(layout["keys"], self.keyboardType)
-            case "fingerStart":
-                self.fingerStart = searchStartKeyFromId(layout["fingerStart"], layout["keys"])
-            case "author":
-                self.author = layout["author"]
-            case "moreInfoUrl":
-                self.moreInfoUrl = layout["moreInfoUrl"]
-            case "moreInfoText":
-                self.moreInfoText = layout["moreInfoText"]
-
-
 def validationFields(layout):
     presenceCounter = 0
     requiredFields = "label fingerStart keyboardType keys".split(" ")
@@ -90,13 +71,23 @@ def validationFields(layout):
 
 class KeyboardLayout(object):
     def __init__(self, layoutDict):
-        self.label = "u dont have name omg"
+        self.label = "qwerty"
         self.keyboardType = "standard"
         self.keys = getQwertyKeys()
         self.fingerStart = getQwertyStartKeys()
 
         validationFields(layoutDict)
-        setFields(self, layoutDict)
+
+        value = 0
+        for field in layoutDict:
+            if field in "label keyboardType author moreInfoUrl moreInfoText":
+                value = layoutDict[field]
+            elif field == "keys":
+                value = generateKeysFromDict(layoutDict["keys"], self.keyboardType)
+            elif field == "fingerStart":
+                value = searchStartKeyFromId(layoutDict["fingerStart"], layoutDict["keys"])
+
+            setattr(self, field, value)
 
     def getLabel(self):
         return self.label

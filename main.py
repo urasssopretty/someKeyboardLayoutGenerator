@@ -6,6 +6,13 @@ def main():
     layoutFile = json.loads(open(layoutFileName).read())
     layout = KeyboardLayout(layoutFile)
 
+    # print(layout.getLabel())
+
+    # for row in layout.getRows():
+    #     for key in row:
+    #         print(key.getPrimaryChar())
+    #     print()
+
     someTextFileName = "testTexts/alice_in_wonderland.txt"
     # someFile = open(someTextFileName).read()
     # print(charStats(string.ascii_lowercase, someFile))
