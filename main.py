@@ -10,10 +10,10 @@ def main():
 
     # print(layout.getLabel())
 
-    for row in layout.getRows():
-        for key in row:
-            print(key.getPrimaryChar(), key.getPosition())
-        print()
+    # for row in layout.getRows():
+    #     for key in row:
+    #         print(key.getPrimaryChar(), key.getPosition(), key.getKeyId())
+    #     print()
 
     someTextFileName = "testTexts/alice_in_wonderland.txt"
     # someFile = open(someTextFileName).read()

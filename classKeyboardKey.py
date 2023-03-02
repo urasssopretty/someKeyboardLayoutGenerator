@@ -16,7 +16,7 @@ def validateFields(keyStruct):
     requiredFields = "primary finger id".split(" ")
 
     for field in keyStruct:
-        if field not in "primary shift finger id":
+        if field not in "primary shift finger id position":
             print("layout file contains strange json-key in list of keys:\t", field)
         elif field in requiredFields:
             presenceCounter += 1
@@ -30,6 +30,8 @@ class Key(object):
         validateKeyboardType(keyboardType)
         validateFields(keyStruct)
 
+        self.position = [-999, -999]
+
         for field in keyStruct:
             match field:
                 case "primary":
@@ -40,15 +42,16 @@ class Key(object):
                     self.finger = keyStruct[field]
                 case "id":
                     self.id = keyStruct[field]
+                case "position":
+                    self.position = keyStruct[field]
 
-        self.position = (-999, -999)
+        if self.position == [-999, -999]:
+            deltaX = [13, 26.75, 39.25]
+            idRanges = [list(range(15, 28)), list(range(29, 40)), list(range(42, 52))]
 
-        deltaX = [13, 26.75, 39.25]
-        idRanges = [list(range(15, 28)), list(range(29, 40)), list(range(42, 52))]
-
-        for index in range(len(idRanges)):
-            if self.id in idRanges[index]:
-                self.position = (self.id - deltaX[index], index + 0.5)
+            for index in range(len(idRanges)):
+                if self.id in idRanges[index]:
+                    self.position = [self.id - deltaX[index], index + 0.5]
 
     def getPrimaryChar(self):
         return self.primary

@@ -1,24 +1,51 @@
 from classKeyboardKey import *
+from classKeyboardLayout import *
 from layoutTest.textTest import charStats
 import string
 
 
-def getPosition(index):
-    # deltaX = [13, 26.75, 39.25]
-    # idRanges = [list(range(15, 28)), list(range(29, 40)), list(range(42, 52))]
-    #
-    # for someIndex in range(len(idRanges)):
-    #     if index in idRanges[someIndex]:
-    #         return [index - deltaX[someIndex], someIndex - 0.5]
+def getSortedCharacters(text, abc, shiftSpecialChars):
+    characters = abc + ''.join(str(element) for element in list(shiftSpecialChars.keys()))
+    charCounters = sorted(charStats(characters, text).items(), key=lambda x: x[1], reverse=True)
 
-    if index in range(0, 13):
-        return [2 + index, 0.5]
-    elif index in range(13, 24):
-        return [2.25 + index - 13, 1.5]
-    elif index in range(24, 35):
-        return [2.75 + index - 23, 2.5]
+    return [el[0] for el in characters]
+
+
+def getPosition(keyIndex):
+    deltaX = [2, -10.75, -21.25]
+    indexRanges = [list(range(0, 13)), list(range(13, 24)), list(range(24, 35))]
+
+    for index in range(len(indexRanges)):
+        if keyIndex in indexRanges[index]:
+            return [keyIndex + deltaX[index], index + .5]
 
     return [-999, -999]
+
+    # if index in range(0, 13):
+    #     return [2 + index, 0.5]
+    # elif index in range(13, 24):
+    #     return [index - 10.75, 1.5]
+    # elif index in range(24, 35):
+    #     return [index - 21.25, 2.5]
+
+
+def getFinger(position):
+    xPosition = int(position[0])
+
+    if xPosition in (list(range(2, 6)) + list(range(8, 11))):
+        return int(xPosition - 1)
+    elif xPosition == 6:
+        return 4
+    elif xPosition == 7:
+        return 7
+    elif xPosition in range(11, 16):
+        return 10
+
+    return -1
+
+
+def getKeyId(length):
+    return length
 
 
 def generateKeys(text, abc):
@@ -41,27 +68,28 @@ def generateKeys(text, abc):
         char = sortedCharacters[index]
         position = getPosition(index)
 
-        print(char, position, index)
-
         keys.append(
-            Key(
-                {
-                    "primary": ord(char),
-                    "shift": ord(char.upper() if (char not in shiftSpecialChars.keys()) else shiftSpecialChars[char]),
-                    "finger": 0,
-                    "id": 0
-                }
-            )
+            {
+                "primary": ord(char),
+                "shift": ord(char.upper() if (char not in shiftSpecialChars.keys()) else shiftSpecialChars[char]),
+                "position": position,
+                "finger": getFinger(position),
+                "id": getKeyId(len(keys))
+            }
         )
 
     return keys
 
 
-def getSortedCharacters(text, abc, shiftSpecialChars):
-    characters = abc + ''.join(str(element) for element in list(shiftSpecialChars.keys()))
-    charCounters = sorted(charStats(characters, text).items(), key=lambda x: x[1], reverse=True)
+def generateStartKeys(keys):
+    homeRow = [key for key in keys if key["position"][1] == 1.5]
+    result = []
 
-    return [el[0] for el in characters]
+    for keyIndex in range(len(homeRow)):
+        if keyIndex in [list(range(0, 4)), list(range(7, 11))]:
+            result.append(homeRow[keyIndex]["id"])
+
+    return result
 
 
 def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
@@ -76,12 +104,13 @@ def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
     text = open(textFileName).read().lower().replace(" ", "")
 
     layoutDict["keys"] = generateKeys(text, abc)
+    layoutDict["fingerStart"] = generateStartKeys(layoutDict["keys"])
 
     # for key in layoutDict["keys"]:
     #     print(key.getPrimaryChar())
 
-    # return keyboardLayout()
-    return 0
+    return KeyboardLayout(layoutDict)
+    # return 0
 
 # from operator import itemgetter
 # from classKeyboardLayout import *
