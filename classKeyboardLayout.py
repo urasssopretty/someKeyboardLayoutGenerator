@@ -26,7 +26,9 @@ def getQwertyKeys():
 
 
 def searchStartKeyFromId(fingerStartIdDict, keys):
-    return [Key(key) for key in keys if key["id"] in fingerStartIdDict.values()]
+    return [Key(key) for id in fingerStartIdDict.values() for key in keys if key["id"] == id]
+    # print(fingerStartIdDict)
+    # return [Key(key) for key in keys if key["id"] in fingerStartIdDict.keys()]
 
 
 def getQwertyStartKeys():

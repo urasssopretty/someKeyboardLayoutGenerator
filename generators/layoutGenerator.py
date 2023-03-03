@@ -13,20 +13,25 @@ def getSortedCharacters(text, abc, shiftSpecialChars):
 
 def getPosition(keyIndex):
     deltaX = [2, -10.75, -21.25]
-    indexRanges = [list(range(0, 13)), list(range(13, 24)), list(range(24, 35))]
 
-    for index in range(len(indexRanges)):
-        if keyIndex in indexRanges[index]:
-            return [keyIndex + deltaX[index], index + .5]
+    if keyIndex in range(0, 13):
+        return [keyIndex + deltaX[0], 0.5]
+    elif keyIndex in range(13, 24):
+        return [keyIndex + deltaX[1], 1.5]
+    elif keyIndex in range(24, 35):
+        return [keyIndex + deltaX[2], 2.5]
 
     return [-999, -999]
 
-    # if index in range(0, 13):
-    #     return [2 + index, 0.5]
-    # elif index in range(13, 24):
-    #     return [index - 10.75, 1.5]
-    # elif index in range(24, 35):
-    #     return [index - 21.25, 2.5]
+    # deltaX = [2, -10.75, -21.25]
+    # print(keyIndex)
+    # indexRanges = [list(range(0, 13)), list(range(13, 24)), list(range(24, 35))]
+    #
+    # for index in range(len(indexRanges)):
+    #     if keyIndex in indexRanges[index]:
+    #         return [keyIndex + deltaX[index], index + .5]
+    #
+    # return [-999, -999]
 
 
 def getFinger(position):
@@ -44,8 +49,15 @@ def getFinger(position):
     return -1
 
 
-def getKeyId(length):
-    return length
+def getKeyId(lenOfKeys):
+    delta = [15, 16, 18]
+
+    if lenOfKeys in range(0, 13):
+        return lenOfKeys + 15
+    elif lenOfKeys in range(13, 24):
+        return lenOfKeys + 16
+    elif lenOfKeys in range(24, 34):
+        return lenOfKeys + 18
 
 
 def generateKeys(text, abc):
@@ -78,21 +90,25 @@ def generateKeys(text, abc):
             }
         )
 
+    print(keys)
     return keys
 
 
 def generateStartKeys(keys):
     homeRow = [key for key in keys if key["position"][1] == 1.5]
-    result = []
+    result = {}
 
-    for keyIndex in range(len(homeRow)):
-        if keyIndex in [list(range(0, 4)), list(range(7, 11))]:
-            result.append(homeRow[keyIndex]["id"])
+    for index in range(10):
+        if index in range (0, 4):
+            result[index] = homeRow[index]["id"]
+        elif index in range(7, 11):
+            result[index - 3] = homeRow[index]["id"]
 
     return result
 
 
 def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
+
     if keyboardType != "standard":
         raise Exception("non standard keyboard type currently dont supports")
 
@@ -104,156 +120,23 @@ def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
     text = open(textFileName).read().lower().replace(" ", "")
 
     layoutDict["keys"] = generateKeys(text, abc)
+
     layoutDict["fingerStart"] = generateStartKeys(layoutDict["keys"])
 
-    # for key in layoutDict["keys"]:
-    #     print(key.getPrimaryChar())
-
     return KeyboardLayout(layoutDict)
-    # return 0
 
-# from operator import itemgetter
-# from classKeyboardLayout import *
-# from classKeyboardKey import *
-# from layoutTest.textTest import *
-# import string
-#
-#
-# def getOrderedPositions(index):
-#     listOfPositions = [
-#         (5.25, 1.5),
-#         (8.25, 1.5),
-#         (4.25, 1.5),
-#         (9.25, 1.5),
-#         (3.25, 1.5),
-#         (10.25, 1.5),
-#         (2.25, 1.5),
-#         (11.25, 1.5),
-#         (6.25, 1.5),
-#         (7.25, 1.5),
-#         (3, 0.5),
-#         (4, 0.5),
-#         (5, 0.5),
-#         (6, 0.5),
-#         (8, 0.5),
-#         (9, 0.5),
-#         (10, 0.5),
-#         (12.25, 1.5),
-#         (4.75, 2.5),
-#         (5.75, 2.5),
-#         (6.75, 2.5),
-#         (7.75, 2.5),
-#         (8.75, 2.5),
-#         (2.75, 2.5),
-#         (3.75, 2.5),
-#         (7, 0.5),
-#         (11, 0.5),
-#         (12, 0.5),
-#         (13, 0.5),
-#         (14, 0.5),
-#         (2, 0.5),
-#         (9.75, 2.5),
-#         (10.75, 2.5),
-#         (11.75, 2.5),
-#     ]
-#
-#     return listOfPositions[index]
-#
-#
-# def getKeyPosition(charCounters, character):
-#     for index in range(len(charCounters)):
-#         if charCounters[index][0] == character:
-#             return getOrderedPositions(index)
-#
-#
-# def setKeysId(keys):
-#     for index in range(len(keys)):
-#         keys[index]["id"] = index
-#
-#     return keys
-#
-# ### TODO REWRITE IT because key id must be in order from first to last but not like this
-# # def getKeyId(charCounters, char):
-#     # for pairIndex in range(len(charCounters)):
-#     #     if charCounters[pairIndex][0] == char:
-#     #         return pairIndex
-#     #
-#     # raise Exception("character in not declared!!!! | error: math based generator in getKeyID", char, "\n", charCounters)
-#
-#
-# def getFingerIndex(position, keys):
-#     xvalue = position[0]
-#
-#     if int(xvalue) in (list(range(2, 6))) + list(range(8, 11)):
-#         return int(xvalue - 1)
-#     elif int(xvalue) == 6:
-#         return 4
-#     elif int(xvalue) == 7:
-#         return 7
-#     elif int(xvalue) in range(11, 16):
-#         return 10
-#
-#
-# def generateKeys(text, abc):
-#     shiftSpecialChars = {
-#         "[": "{",
-#         "]": "}",
-#         "\\": "|",
-#         ";": ":",
-#         "'": "\"",
-#         ",": "<",
-#         ".": ">",
-#         "/": "?"
-#     }
-#
-#     characters = abc + ''.join(str(element) for element in list(shiftSpecialChars.keys()))
-#     charCounters = sorted(charStats(characters, text).items(), key=lambda x: x[1], reverse=True)
-#
-#     keys = []
-#
-#     for char in characters:
-#         keyPosition = getKeyPosition(charCounters, char)
-#         keys.append(
-#             {
-#                 "primary": char,
-#                 "shift": shiftSpecialChars[char] if (char in shiftSpecialChars.keys()) else char.upper(),
-#                 "position": keyPosition,
-#                 "id": 0,
-#                 # "id": getKeyId(charCounters, char, keyPosition),
-#                 "finger": getFingerIndex(keyPosition, keys)
-#             }
-#         )
-#
-#     return keys
-#
-#
-# def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
-#     if keyboardType != "standard":
-#         raise Exception("HEY NOW ANOTHER KEYBOARD TYPE UNSUPPORTED | ERROR IN MATH BASED KEYB GENERATOR")
-#
-#     text = open(textFileName).read().lower().replace(" ", "")
-#
-#     label = "layout generated by math based keyboard layout generated v0.4"
-#     keyboardType = "standard"
-#     keys = generateKeys(text, abc)
-#     keys = setKeysId(keys)
-#
-#     for key in keys:
-#         print(key["id"], key["position"])
 
-    # rows = [[] for _ in range(3)]
-    # for key in keys:
-    #     match key["position"][1]:
-    #         case 0.5:
-    #             rows[0].append(key)
-    #         case 1.5:
-    #             rows[1].append(key)
-    #         case 2.5:
-    #             rows[2].append(key)
-    # for row in rows:
-    #     for key in sorted(row, key=lambda d: d["position"][0]):
-    #         print(key["primary"], key["position"], key["id"])
-    #     print()
-
-    # return KeyboardLayout()
+# rows = [[] for _ in range(3)]
+# for key in keys:
+#     match key["position"][1]:
+#         case 0.5:
+#             rows[0].append(key)
+#         case 1.5:
+#             rows[1].append(key)
+#         case 2.5:
+#             rows[2].append(key)
+# for row in rows:
+#     for key in sorted(row, key=lambda d: d["position"][0]):
+#         print(key["primary"], key["position"], key["id"])
+#     print()
 

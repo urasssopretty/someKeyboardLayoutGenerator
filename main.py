@@ -28,7 +28,11 @@ def main():
     # print("distance test:", '%.3f' % oldSomeDistanceTest(layout, textFileName))
     # print("new distance test:", '%.3f' % someDistanceTest(layout, textFileName))
 
-    mathLayoutGenerator(someTextFileName, "standard")
+    generatedLayout = mathLayoutGenerator(someTextFileName, "standard")
+
+    for key in generatedLayout.getKeys():
+        print(key.getPrimaryChar(), key.getKeyId())
+
 
 
 if __name__ == '__main__':
