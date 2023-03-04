@@ -1,28 +1,28 @@
 import json
-import string
-from layoutTest.distanceTest import *
-
 from classKeyboardLayout import *
-from layoutGenerator import *
+from generators.layoutGenerator import *
+from layoutTest.distanceTest import *
 
 
 def main():
-    # textFileName = "testTexts/alice_in_wonderland.txt"
     layoutFileName = "layouts/normalQwerty.txt"
     layoutFile = json.loads(open(layoutFileName).read())
     layout = KeyboardLayout(layoutFile)
 
-    # for key in layout.getKeys():
-    #     print(key.getPrimaryChar(), key.getPosition(), key.getKeyId())
-
-    # print(charStats(string.ascii_lowercase, open("testTexts/alice_in_wonderland.txt").read()))
+    someTextFileName = "testTexts/alice_in_wonderland.txt"
+    generatedLayout = mathLayoutGenerator(someTextFileName, "standard")
 
     textFileName = "testTexts/somenews.txt"
+
+    print("\nqwerty layout:")
     print("classic distance test:", '%.3f' % classicDistanceTest(layout, textFileName))
     print("distance test:", '%.3f' % oldSomeDistanceTest(layout, textFileName))
-    # print("distance test:", '%.3f' % someDistanceTest(layout, textFileName))
-    # print("finger stats:", end=" ")
-    # for element in fingerStats(layout, textFileName): print(element, end=" ")
+    # print("new distance test:", '%.3f' % someDistanceTest(layout, textFileName))
+
+    print("\ngenerated layout:")
+    print("classic distance test:", '%.3f' % classicDistanceTest(generatedLayout, textFileName))
+    print("distance test:", '%.3f' % oldSomeDistanceTest(generatedLayout, textFileName))
+    # print("new distance test:", '%.3f' % someDistanceTest(generatedLayout, textFileName))
 
 
 if __name__ == '__main__':

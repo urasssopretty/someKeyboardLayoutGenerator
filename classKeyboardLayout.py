@@ -16,81 +16,88 @@ from classKeyboardKey import Key
 
 
 def getQwertyKeys():
+    # return [Key(key) for key in json.load(open("layouts/normalQwerty.txt"))["keys"] if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52)))]
     keys = []
     for key in json.loads(open("layouts/normalQwerty.txt").read())["keys"]:
-        keys.append(Key(key))
+        if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52))):
+            keys.append(Key(key))
 
     return keys
 
 
-def searchStartKeyFromId(fingerStartIdDict, keys):
+def searchStartKeysFromId(fingerStartIdDict, keys):
     result = []
 
-    for startId in fingerStartIdDict.values():
+    for fingerStartId in fingerStartIdDict.values():
         for key in keys:
-            if key["id"] == startId:
+            if key["id"] == fingerStartId:
                 result.append(Key(key))
-                break
 
     return result
+
+    # return [Key(key) for fingerStartId in fingerStartIdDict.values() for key in keys if key["id"] == fingerStartId]
+    # print(fingerStartIdDict)
+    # return [Key(key) for key in keys if key["id"] in fingerStartIdDict.keys()]
 
 
 def getQwertyStartKeys():
     layoutFile = json.loads(open("layouts/qwerty.txt").read())
 
-    return searchStartKeyFromId(layoutFile["fingerStart"], layoutFile["keys"])
+    return searchStartKeysFromId(layoutFile["fingerStart"], layoutFile["keys"])
 
 
-def generateKeysFromFile(keys, keyboardType):
+def generateKeysFromDict(keys, keyboardType):
+    if keyboardType != "standard":
+        raise Exception("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
+
     usedId = []
     result = []
 
-    if keyboardType == "standard":
-        for key in keys:
-            if key["id"] in usedId:
-                print("ITS FUCKING ERROR!!!! RED ALARM!!!! | error u have non-individaul id for keys", key)
-                continue
-            else:
-                usedId.append(key["id"])
+    for key in keys:
+        if key["id"] in usedId:
+            raise Exception("ERROR!!!! RED ALARM!!!! | error u have non individual id for keys", key)
 
-            if 14 < key["id"] < 28 \
-                    or 28 < key["id"] < 40 \
-                    or 41 < key["id"] < 52:
-                result.append(Key(key))
-    else:
-        print("ERROR\n", "\tnon \"standard\" type of keyboard not supported now")
+        usedId.append(key["id"])
+
+        if key["id"] in (list(range(15, 28)) + list(range(29, 40)) + list(range(42, 52))):
+            result.append(Key(key))
 
     return result
 
 
-def validationFields(self, layoutFile):
-    for field in layoutFile:
-        if field in "label author moreInfoUrl moreInfoText fingerStart keyboardType keys":
-            match field:
-                case "keyboardType":
-                    self.keyboardType = layoutFile["keyboardType"]
-                case "keys":
-                    self.keys = generateKeysFromFile(layoutFile["keys"], self.keyboardType)
-                case "fingerStart":
-                    self.fingerStart = searchStartKeyFromId(layoutFile["fingerStart"], layoutFile["keys"])
-                case "author":
-                    self.author = layoutFile["author"]
-                case "moreInfoUrl":
-                    self.moreInfoUrl = layoutFile["moreInfoUrl"]
-                case "moreInfoText":
-                    self.moreInfoText = layoutFile["moreInfoText"]
-        else:
-            print("some field in json of layout not valid:\t" + field + "\n")
+def validationFields(layout):
+    presenceCounter = 0
+    requiredFields = "label fingerStart keyboardType keys".split(" ")
+
+    for field in layout:
+        if field not in "label author moreInfoUrl moreInfoText fingerStart keyboardType keys":
+            print("some field in json of layout not valid:\t", field)
+        elif field in requiredFields:
+            presenceCounter += 1
+
+    if presenceCounter != len(requiredFields):
+        raise Exception("u dont have some field in layout", layout.keys())
 
 
 class KeyboardLayout(object):
-    def __init__(self, layoutFile):
-        self.label = layoutFile["label"]
+    def __init__(self, layoutDict):
+        self.label = "qwerty"
         self.keyboardType = "standard"
         self.keys = getQwertyKeys()
         self.fingerStart = getQwertyStartKeys()
 
-        validationFields(self, layoutFile)
+        validationFields(layoutDict)
+
+        value = 0
+        for field in layoutDict:
+            if field in "label keyboardType author moreInfoUrl moreInfoText":
+                value = layoutDict[field]
+            elif field == "keys":
+                value = generateKeysFromDict(layoutDict["keys"], self.keyboardType)
+            elif field == "fingerStart":
+                value = searchStartKeysFromId(layoutDict["fingerStart"], layoutDict["keys"])
+
+            setattr(self, field, value)
 
     def getLabel(self):
         return self.label
@@ -123,9 +130,4 @@ class KeyboardLayout(object):
                     ]
         else:
             print("now we dont support another keyb type | error in getRows method in layout class")
-
-    # def getKeyFromPrimary(self, primary):
-    #     for key in self.keys:
-    #         if key.getPrimary() == primary:
-    #             return key
 
