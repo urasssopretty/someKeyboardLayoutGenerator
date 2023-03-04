@@ -5,18 +5,31 @@ def classicDistanceTest(keyboardLayout, fileName):
     ### in this test position of fingers always at start poses (home row)
     text = open(fileName).read().lower().replace(' ', '')
     startPoses = keyboardLayout.getFingerStart()
+
+    # for key in startPoses:
+    #     print(key.getPrimaryChar())
+    #
+    # print("\t len", len(startPoses))
+
     keysUnderEachFinger = keyboardLayout.getKeysUnderFingers()
     distance = 0
 
+    ### TODO rewrite it for more performance
+    ### не гонять все десять пальцев, а смотреть есть ли чар в списке чаров какого-либо пальца и тогда уже считать дистанцию
     for letter in text:
+
+        # print(letter)
+
         for fingerIndex in range(10):
             if fingerIndex in (4, 5):
                 continue
 
+            # print("\t", fingerIndex)
+
             for key in keysUnderEachFinger[fingerIndex]:
-                if key.getPrimaryChar() == letter:
-                    if key != startPoses[fingerIndex]:
-                        distance += math.dist(startPoses[fingerIndex].getKeyPostion(), key.getKeyPostion())
+                if key.getPrimaryChar() == letter and key != startPoses[fingerIndex]:
+                    distance += math.dist(startPoses[fingerIndex].getPosition(), key.getPosition())
+
     return distance
 
 
@@ -34,7 +47,7 @@ def oldSomeDistanceTest(keyboardLayout, fileName):
 
             for key in keysUnderFingers[fingerIndex]:
                 if key.getPrimaryChar() == letter and key != lastKey[fingerIndex]:
-                    distance += math.dist(lastKey[fingerIndex].getKeyPostion(), key.getKeyPostion())
+                    distance += math.dist(lastKey[fingerIndex].getPosition(), key.getPosition())
                     lastKey[fingerIndex] = key
                     break
 
@@ -63,7 +76,7 @@ def someDistanceTest(keyboardLayout, fileName):
             for key in keysUnderFingers[fingerIndex]:
                 counterOfSteps[fingerIndex] += 1
                 if key.getPrimaryChar() == letter and key != lastKey[fingerIndex]:
-                    distance += math.dist(lastKey[fingerIndex].getKeyPostion(), key.getKeyPostion())
+                    distance += math.dist(lastKey[fingerIndex].getPosition(), key.getPosition())
                     lastKey[fingerIndex] = key
                     break
 

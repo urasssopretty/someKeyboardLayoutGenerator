@@ -6,8 +6,8 @@
 
 ### KEY STRUCTURE IN JSON FILE MUST CONTAIN THE FOLLOWING FIELDS: primary, finger, id
 
-def validateKeyboardType(keybtype):
-    if keybtype != "standard":
+def validateKeyboardType(keyboardType):
+    if keyboardType != "standard":
         raise Exception("non standard keyboard type!!! | now its dont work")
 
 

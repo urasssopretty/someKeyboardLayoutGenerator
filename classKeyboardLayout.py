@@ -25,8 +25,17 @@ def getQwertyKeys():
     return keys
 
 
-def searchStartKeyFromId(fingerStartIdDict, keys):
-    return [Key(key) for id in fingerStartIdDict.values() for key in keys if key["id"] == id]
+def searchStartKeysFromId(fingerStartIdDict, keys):
+    result = []
+
+    for fingerStartId in fingerStartIdDict.values():
+        for key in keys:
+            if key["id"] == fingerStartId:
+                result.append(Key(key))
+
+    return result
+
+    # return [Key(key) for fingerStartId in fingerStartIdDict.values() for key in keys if key["id"] == fingerStartId]
     # print(fingerStartIdDict)
     # return [Key(key) for key in keys if key["id"] in fingerStartIdDict.keys()]
 
@@ -34,7 +43,7 @@ def searchStartKeyFromId(fingerStartIdDict, keys):
 def getQwertyStartKeys():
     layoutFile = json.loads(open("layouts/qwerty.txt").read())
 
-    return searchStartKeyFromId(layoutFile["fingerStart"], layoutFile["keys"])
+    return searchStartKeysFromId(layoutFile["fingerStart"], layoutFile["keys"])
 
 
 def generateKeysFromDict(keys, keyboardType):
@@ -86,7 +95,7 @@ class KeyboardLayout(object):
             elif field == "keys":
                 value = generateKeysFromDict(layoutDict["keys"], self.keyboardType)
             elif field == "fingerStart":
-                value = searchStartKeyFromId(layoutDict["fingerStart"], layoutDict["keys"])
+                value = searchStartKeysFromId(layoutDict["fingerStart"], layoutDict["keys"])
 
             setattr(self, field, value)
 

@@ -1,14 +1,13 @@
-from classKeyboardKey import *
 from classKeyboardLayout import *
 from layoutTest.textTest import charStats
 import string
 
 
 def getSortedCharacters(text, abc, shiftSpecialChars):
-    characters = abc + ''.join(str(element) for element in list(shiftSpecialChars.keys()))
+    characters = abc + " " + ''.join(str(specialChar) for specialChar in list(shiftSpecialChars.keys()))
     charCounters = sorted(charStats(characters, text).items(), key=lambda x: x[1], reverse=True)
 
-    return [el[0] for el in characters]
+    return [charAndCounter[0] for charAndCounter in charCounters]
 
 
 def getPosition(keyIndex):
@@ -22,16 +21,6 @@ def getPosition(keyIndex):
         return [keyIndex + deltaX[2], 2.5]
 
     return [-999, -999]
-
-    # deltaX = [2, -10.75, -21.25]
-    # print(keyIndex)
-    # indexRanges = [list(range(0, 13)), list(range(13, 24)), list(range(24, 35))]
-    #
-    # for index in range(len(indexRanges)):
-    #     if keyIndex in indexRanges[index]:
-    #         return [keyIndex + deltaX[index], index + .5]
-    #
-    # return [-999, -999]
 
 
 def getFinger(position):
@@ -90,25 +79,32 @@ def generateKeys(text, abc):
             }
         )
 
-    print(keys)
+    keys.append(
+        {
+            "primary": 32,
+            "finger": 5,
+            "id": 56
+        },
+    )
+
+
     return keys
 
 
 def generateStartKeys(keys):
-    homeRow = [key for key in keys if key["position"][1] == 1.5]
+    homeRow = [keyDict for keyDict in keys if "position" in keyDict.keys() and keyDict["position"][1] == 1.5]
     result = {}
 
     for index in range(10):
-        if index in range (0, 4):
-            result[index] = homeRow[index]["id"]
-        elif index in range(7, 11):
-            result[index - 3] = homeRow[index]["id"]
+        if index in (list(range(0, 4)) + list(range(6, 10))):
+            result[str(index + 1)] = homeRow[index]["id"]
+        elif index in (4, 5):
+            result[str(index + 1)] = 56
 
     return result
 
 
 def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
-
     if keyboardType != "standard":
         raise Exception("non standard keyboard type currently dont supports")
 
@@ -124,19 +120,3 @@ def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
     layoutDict["fingerStart"] = generateStartKeys(layoutDict["keys"])
 
     return KeyboardLayout(layoutDict)
-
-
-# rows = [[] for _ in range(3)]
-# for key in keys:
-#     match key["position"][1]:
-#         case 0.5:
-#             rows[0].append(key)
-#         case 1.5:
-#             rows[1].append(key)
-#         case 2.5:
-#             rows[2].append(key)
-# for row in rows:
-#     for key in sorted(row, key=lambda d: d["position"][0]):
-#         print(key["primary"], key["position"], key["id"])
-#     print()
-
