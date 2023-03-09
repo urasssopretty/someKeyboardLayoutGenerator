@@ -3,12 +3,66 @@ from layoutTest.textTest import charStats
 import string
 
 
-def generateSortedCharacters(text, abc, shiftSpecialCharsDirt):
-    characters = abc + ''.join(str(specialChar) for specialChar in list(shiftSpecialChars.keys()))
+def generateSortedCharacters(text, abc, shiftSpecialCharsDict):
     # characters = abc + " " + ''.join(str(specialChar) for specialChar in list(shiftSpecialChars.keys()))
+    characters = abc + ''.join(str(specialChar) for specialChar in list(shiftSpecialCharsDict.keys()))
     charCounters = sorted(charStats(characters, text).items(), key=lambda x: x[1], reverse=True)
 
     return [charAndCounter[0] for charAndCounter in charCounters]
+
+
+def generatePositions(sortedChars):
+    result = []
+    deltaX = [2, -10.75, -21.25]
+
+    for index in range(len(sortedChars)):
+        if index in range(0, 13):
+            result.append([index + deltaX[0], 0.5])
+        elif index in range(13, 24):
+            result.append([index + deltaX[1], 1.5])
+        elif index in range(24, 35):
+            result.append([index + deltaX[2], 2.5])
+        else:
+            result.append([-999, -999])
+
+    return result
+
+
+def generateFingers(positions):
+    result = []
+
+    for position in positions:
+        xPosition = int(position[0])
+
+        if xPosition in (list(range(2, 6)) + list(range(8, 11))):
+            result.append(int(xPosition - 1))
+        elif xPosition == 6:
+            result.append(4)
+        elif xPosition == 7:
+            result.append(7)
+        elif xPosition in range(11, 16):
+            result.append(10)
+        else:
+            result.append(-1)
+
+    return result
+
+
+def generateKeyIds(characters):
+    result = []
+    delta = [15, 16, 18]
+
+    for index in range(len(characters)):
+        if index in range(0, 13):
+            result.append(index + 15)
+        elif index in range(13, 24):
+            result.append(index + 16)
+        elif index in range(24, 34):
+            result.append(index + 18)
+        else:
+            result.append(-1)
+
+    return result
 
 
 def generateKeys(text, abc):
@@ -23,62 +77,35 @@ def generateKeys(text, abc):
         "/": "?"
     }
 
-    sortedCharacters = getSortedCharacters(text, abc, shiftSpecialChars)
+    sortedCharacters = generateSortedCharacters(text, abc, shiftSpecialChars)
 
-    keys = []
-    key = {}
+    primaries = []
+    shifts = []
 
     for index in range(len(sortedCharacters)):
         char = sortedCharacters[index]
-        key["primary"] = ord(char)
 
-        keys.append(key)
+        primaries.append(ord(char))
+        shifts.append(ord(char.upper() if (char not in shiftSpecialChars.keys()) else shiftSpecialChars[char]))
 
-    del key
+    positions = generatePositions(sortedCharacters)
+    fingerIds = generateFingers(positions)
+    keysId = generateKeyIds(sortedCharacters)
 
-    key["shift"] = ord(char.upper() if (char not in shiftSpecialChars.keys()) else shiftSpecialChars[char])
+    keys = []
+    for index in range(len(sortedCharacters)):
+        keys.append(
+            {
+                "primary": primaries[index],
+                "shift": shifts[index],
+                "position": positions[index],
+                "finger": fingerIds[index],
+                "id": keysId[index]
+            }
+        )
 
-    primarys = []
-    shifts = []
-    positions = getPosition(keys)
-    fingerIds = getFinger(keys)
-    keysId = getKeyIds(keys)
-
-    for index in range(len(keys)):
-        keys[index] = {
-            "primary": primarys[index],
-            "shift": shifts[index],
-            "position": positions[index],
-            "finger": fingerIds[index],
-            "id": keysId[index]
-        }
-
-        # keys[index]["primary"] = primarys[index]
-        # keys[index]["shift"] = shifts[index]
-        # keys[index]["position"] = positions[index]
-        # keys[index]["finger"] = fingerIds[index]
-        # keys[index]["id"] = keysId[index]
-
-    # position = getPosition(index)
-    # "position": position,
-    # "finger": getFinger(position),
-    # "id": getKeyId(len(keys))
-
-    # for index in range(len(sortedCharacters)):
-    #     char = sortedCharacters[index]
-    #     position = getPosition(index)
-    #
-    #     keys.append(
-    #         {
-    #             "primary": ord(char),
-    #             "shift": ord(char.upper() if (char not in shiftSpecialChars.keys()) else shiftSpecialChars[char]),
-    #             "position": position,
-    #             "finger": getFinger(position),
-    #             "id": getKeyId(len(keys))
-    #         }
-    #     )
-
-    ### TODO избавиться от этого
+    ### TODO find the way to remove it
+    # this is SPACE BAR
     keys.append(
         {
             "primary": 32,
@@ -91,6 +118,17 @@ def generateKeys(text, abc):
     return keys
 
 
+def generateStartKeys(keys):
+    homeRow = [keyDict for keyDict in keys if "position" in keyDict.keys() and keyDict["position"][1] == 1.5]
+    result = {}
+
+    for index in range(10):
+        if index in (list(range(0, 4)) + list(range(6, 10))):
+            result[str(index + 1)] = homeRow[index]["id"]
+        elif index in (4, 5):
+            result[str(index + 1)] = 56
+
+    return result
 
 
 def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
@@ -99,70 +137,12 @@ def mathLayoutGenerator(textFileName, keyboardType, abc=string.ascii_lowercase):
 
     text = open(textFileName).read().lower().replace(" ", "")
 
+    keys = generateKeys(text, abc)
     layoutDict = {
         "label": "layout generated by layout generator by keyboard layout generator by urasssopretty",
         "keyboardType": keyboardType,
-        "keys": generateKeys(text, abc),
-        "fingerStart": generateStartKeys()
+        "keys": keys,
+        "fingerStart": generateStartKeys(keys)
     }
 
     return KeyboardLayout(layoutDict)
-
-# def generateStartKeys(keys):
-#     homeRow = [keyDict for keyDict in keys if "position" in keyDict.keys() and keyDict["position"][1] == 1.5]
-#     result = {}
-#
-#     for index in range(10):
-#         if index in (list(range(0, 4)) + list(range(6, 10))):
-#             result[str(index + 1)] = homeRow[index]["id"]
-#         elif index in (4, 5):
-#             result[str(index + 1)] = 56
-#
-#     return result
-
-
-# def getSortedCharacters(text, abc, shiftSpecialChars):
-#     characters = abc + ''.join(str(specialChar) for specialChar in list(shiftSpecialChars.keys()))
-#     # characters = abc + " " + ''.join(str(specialChar) for specialChar in list(shiftSpecialChars.keys()))
-#     charCounters = sorted(charStats(characters, text).items(), key=lambda x: x[1], reverse=True)
-#
-#     return [charAndCounter[0] for charAndCounter in charCounters]
-#
-#
-# def getPosition(keyIndex):
-#     deltaX = [2, -10.75, -21.25]
-#
-#     if keyIndex in range(0, 13):
-#         return [keyIndex + deltaX[0], 0.5]
-#     elif keyIndex in range(13, 24):
-#         return [keyIndex + deltaX[1], 1.5]
-#     elif keyIndex in range(24, 35):
-#         return [keyIndex + deltaX[2], 2.5]
-#
-#     return [-999, -999]
-#
-#
-# def getFinger(position):
-#     xPosition = int(position[0])
-#
-#     if xPosition in (list(range(2, 6)) + list(range(8, 11))):
-#         return int(xPosition - 1)
-#     elif xPosition == 6:
-#         return 4
-#     elif xPosition == 7:
-#         return 7
-#     elif xPosition in range(11, 16):
-#         return 10
-#
-#     return -1
-#
-#
-# def getKeyId(lenOfKeys):
-#     delta = [15, 16, 18]
-#
-#     if lenOfKeys in range(0, 13):
-#         return lenOfKeys + 15
-#     elif lenOfKeys in range(13, 24):
-#         return lenOfKeys + 16
-#     elif lenOfKeys in range(24, 34):
-#         return lenOfKeys + 18

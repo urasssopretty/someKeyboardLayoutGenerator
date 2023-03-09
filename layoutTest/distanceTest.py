@@ -6,25 +6,16 @@ def classicDistanceTest(keyboardLayout, fileName):
     text = open(fileName).read().lower().replace(' ', '')
     startPoses = keyboardLayout.getFingerStart()
 
-    # for key in startPoses:
-    #     print(key.getPrimaryChar())
-    #
-    # print("\t len", len(startPoses))
-
     keysUnderEachFinger = keyboardLayout.getKeysUnderFingers()
     distance = 0
 
     ### TODO rewrite it for more performance
     ### не гонять все десять пальцев, а смотреть есть ли чар в списке чаров какого-либо пальца и тогда уже считать дистанцию
+    ### сохранять предыдушие буквы для некоторые пальцев и типо учитывать что если буквы повторяются то дистанц += 0
     for letter in text:
-
-        # print(letter)
-
         for fingerIndex in range(10):
             if fingerIndex in (4, 5):
                 continue
-
-            # print("\t", fingerIndex)
 
             for key in keysUnderEachFinger[fingerIndex]:
                 if key.getPrimaryChar() == letter and key != startPoses[fingerIndex]:
