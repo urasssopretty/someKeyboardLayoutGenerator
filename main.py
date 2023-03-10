@@ -22,6 +22,11 @@ def main():
     print("\ngenerated layout:")
     print("classic distance test:", '%.3f' % classicDistanceTest(generatedLayout, textFileName))
     print("distance test:", '%.3f' % oldSomeDistanceTest(generatedLayout, textFileName))
+
+    colemak = KeyboardLayout(json.loads(open("layouts/colemak.txt").read()))
+    print("\ncolemak layout:")
+    print("classic distance test:", '%.3f' % classicDistanceTest(colemak, textFileName))
+    print("distance test:", '%.3f' % oldSomeDistanceTest(colemak, textFileName))
     # print("new distance test:", '%.3f' % someDistanceTest(generatedLayout, textFileName))
 
 

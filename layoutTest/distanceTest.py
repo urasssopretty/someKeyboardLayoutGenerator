@@ -5,23 +5,47 @@ def classicDistanceTest(keyboardLayout, fileName):
     ### in this test position of fingers always at start poses (home row)
     text = open(fileName).read().lower().replace(' ', '')
     startPoses = keyboardLayout.getFingerStart()
-
     keysUnderEachFinger = keyboardLayout.getKeysUnderFingers()
+    previousKeys = [0 for _ in range(10)]
     distance = 0
 
-    ### TODO rewrite it for more performance
-    ### не гонять все десять пальцев, а смотреть есть ли чар в списке чаров какого-либо пальца и тогда уже считать дистанцию
     ### сохранять предыдушие буквы для некоторые пальцев и типо учитывать что если буквы повторяются то дистанц += 0
     for letter in text:
-        for fingerIndex in range(10):
+        for fingerIndex in (list(range(0, 4)) + list(range(6, 10))):
+            # print(fingerIndex)
             if fingerIndex in (4, 5):
                 continue
 
             for key in keysUnderEachFinger[fingerIndex]:
                 if key.getPrimaryChar() == letter and key != startPoses[fingerIndex]:
+                    if previousKeys[fingerIndex] == key:
+                        continue
                     distance += math.dist(startPoses[fingerIndex].getPosition(), key.getPosition())
+                    previousKeys[fingerIndex] = key
 
     return distance
+#
+# def classicDistanceTest(keyboardLayout, fileName):
+#     ### in this test position of fingers always at start poses (home row)
+#     text = open(fileName).read().lower().replace(' ', '')
+#     startPoses = keyboardLayout.getFingerStart()
+#
+#     keysUnderEachFinger = keyboardLayout.getKeysUnderFingers()
+#     distance = 0
+#
+#     ### TODO rewrite it for more performance
+#     ### не гонять все десять пальцев, а смотреть есть ли чар в списке чаров какого-либо пальца и тогда уже считать дистанцию
+#     ### сохранять предыдушие буквы для некоторые пальцев и типо учитывать что если буквы повторяются то дистанц += 0
+#     for letter in text:
+#         for fingerIndex in range(10):
+#             if fingerIndex in (4, 5):
+#                 continue
+#
+#             for key in keysUnderEachFinger[fingerIndex]:
+#                 if key.getPrimaryChar() == letter and key != startPoses[fingerIndex]:
+#                     distance += math.dist(startPoses[fingerIndex].getPosition(), key.getPosition())
+#
+#     return distance
 
 
 def oldSomeDistanceTest(keyboardLayout, fileName):
